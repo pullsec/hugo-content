@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/status-active-green?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/status-%20development-orange?style=for-the-badge" />
   <img src="https://img.shields.io/badge/type-content-blue?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Hugo-FF4088?style=for-the-badge&logo=hugo&logoColor=white" />
   <img src="https://img.shields.io/badge/content-public-brightgreen?style=for-the-badge" />
