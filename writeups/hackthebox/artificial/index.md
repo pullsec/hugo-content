@@ -67,7 +67,7 @@ The HTTP service presents a webpage titled "Artificial - AI Solutions", served b
 `http://artificial.htb/`
 
 <div style="display: flex; justify-content: center;">
-  <img src="/ctf/_hackthebox/machines/images/web.png" alt="web" style="width: 100%; margin-right: 10px;">
+  <img src="images/web.png" alt="web" style="width: 100%; margin-right: 10px;">
 </div>
 
 ### Registration & Login
@@ -369,13 +369,13 @@ To access this internal service from the attacker machine, an SSH tunnel was est
 This allowed interaction with the internal service via localhost:9898 on the attacker machine.
 
 <div style="display: flex; justify-content: center;">
-  <img src="/ctf/_hackthebox/machines/images/backrest.png" alt="backrest" style="width: 100%; margin-right: 10px;">
+  <img src="images/backrest.png" alt="backrest" style="width: 100%; margin-right: 10px;">
 </div>
 
 To start using Backrest, you first need to create a repository where your backups will be stored. To do this, log in to the Backrest interface with your credentials, then click on Add Repository. You’ll need to fill in a few key details: a repository name to identify it (for example, mybucket), the repository URL, which is the local or remote path where the backups will be saved (for example, /opt for a local folder), and a password if needed, especially for secured backends. Once you have entered this information, simply submit the form to create the repository, which will then be ready to store your backups.
 
 <div style="display: flex; justify-content: center;">
-  <img src="/ctf/_hackthebox/machines/images/restics.png" alt="restics" style="width: 80%; margin-right: 10px;">
+  <img src="images/restics.png" alt="restics" style="width: 80%; margin-right: 10px;">
 </div>
 
 Once you've created a repository via the Backrest interface (or manually using Restic), you can leverage rest-server to remotely back up and restore sensitive data.

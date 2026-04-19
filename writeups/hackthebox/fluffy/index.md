@@ -341,7 +341,7 @@ After importing the BloodHound-python data into the BloodHound Community Edition
 The most interesting path identified was the following:
 
 <div style="display: flex; justify-content: center;">
-  <img src="/ctf/_hackthebox/machines/images/blood.png" alt="AD1" style="width: 100%; margin-right: 10px;">
+  <img src="images/blood.png" alt="AD1" style="width: 100%; margin-right: 10px;">
 </div>
 
 From this graph, we can see:
@@ -350,7 +350,7 @@ From this graph, we can see:
 - This group has GenericAll privileges over the Service Accounts group.
 
 <div style="display: flex; justify-content: center;">
-  <img src="/ctf/_hackthebox/machines/images/blood2.png" alt="AD2" style="width: 100%; margin-right: 10px;">
+  <img src="images/blood2.png" alt="AD2" style="width: 100%; margin-right: 10px;">
 </div>
 
 Using bloodyAD, I added p.agila to the SERVICE ACCOUNTS group, leveraging the GenericAll permission discovered earlier in BloodHound

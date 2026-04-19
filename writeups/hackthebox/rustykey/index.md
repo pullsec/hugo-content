@@ -319,15 +319,15 @@ This was confirmed by cross-referencing the user enumeration output from LDAP an
 > You can identify a computer account either by name (`...$`) or by RID (Relative Identifier). In this case, `1125 → IT-COMPUTER3$`.
 
 <div style="display: flex; justify-content: center;">
-  <img src="/ctf/_hackthebox/machines/images/computer_rustykey.png" alt="Computer" style="width: 100%; margin-right: 10px;">
+  <img src="images/computer_rustykey.png" alt="Computer" style="width: 100%; margin-right: 10px;">
 </div>
 <br>
 <div style="display: flex; justify-content: center;">
-  <img src="/ctf/_hackthebox/machines/images/helpdesk_computer_rustykey.png" alt="HelpDeskComputer" style="width: 100%; margin-right: 10px;">
+  <img src="images/helpdesk_computer_rustykey.png" alt="HelpDeskComputer" style="width: 100%; margin-right: 10px;">
 </div>
 <br>
 <div style="display: flex; justify-content: center;">
-  <img src="/ctf/_hackthebox/machines/images/helpdesk_groupe_rustykey.png" alt="HelpDeskGroupe" style="width: 100%; margin-right: 10px;">
+  <img src="images/helpdesk_groupe_rustykey.png" alt="HelpDeskGroupe" style="width: 100%; margin-right: 10px;">
 </div>
 
 ## Initial Access (Exploitation)
@@ -450,7 +450,7 @@ If bb.morgan is part of the Support group (or can be added to it), this opens th
 - Exploiting shell extension misconfiguration
 
 <div style="display: flex; justify-content: center;">
-  <img src="/ctf/_hackthebox/machines/images/support_rustykey.png" alt="Support" style="width: 100%; margin-right: 10px;">
+  <img src="images/support_rustykey.png" alt="Support" style="width: 100%; margin-right: 10px;">
 </div>
 
 > [!NOTE]
@@ -642,7 +642,7 @@ meterpreter >
 After getting a short-lived `meterpreter` session as `mm.turner`, I used it to execute a RBCD attack (Resource-Based Constrained Delegation). The goal: impersonate the high-privileged user backupadmin using `IT-COMPUTER3$`, which I previously controlled.
 
 <div style="display: flex; justify-content: center;">
-  <img src="/ctf/_hackthebox/machines/images/delegationmanager_rustykey.png" alt="DelegationManager" style="width: 100%; margin-right: 10px;">
+  <img src="images/delegationmanager_rustykey.png" alt="DelegationManager" style="width: 100%; margin-right: 10px;">
 </div>
 
 From the meterpreter shell (via mm.turner), I launched PowerShell and granted delegation rights to IT-COMPUTER3$ over the Domain Controller object
