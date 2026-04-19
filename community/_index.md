@@ -1,12 +1,12 @@
 ---
-title: "Friends"
+title: "community"
 date: 2026-04-18
 layout: "friends"
 description: "People and blogs I enjoy reading and learning from."
 keywords:
-  - "friends"
   - "blogroll"
   - "network"
+  - "community"
 ---
 
 {{< busuanzi_embed false "This page has " >}}
