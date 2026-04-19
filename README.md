@@ -194,3 +194,4 @@ To avoid exposing internal site configuration, layout customizations, and deploy
 
 Not as a full website.  
 It is a content source designed to be consumed by the main Hugo project.
+test ruleset pipeline
