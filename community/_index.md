@@ -2,6 +2,8 @@
 title: "community"
 date: 2026-04-18
 layout: "friends"
+aliases:
+  - /friends/
 description: "People and blogs I enjoy reading and learning from."
 keywords:
   - "blogroll"
