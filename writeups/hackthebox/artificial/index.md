@@ -7,6 +7,12 @@ categories:
   - writeups
 collections:
   - hackthebox
+keywords:
+  - hackthebox artificial
+  - tensorflow deserialization exploit
+  - remote code execution web
+  - docker environment exploitation
+  - linux privilege escalation
 tags:
   - linux
   - easy

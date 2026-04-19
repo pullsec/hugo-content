@@ -7,8 +7,16 @@ categories:
   - writeups
 collections:
   - hackthebox
+keywords:
+  - hackthebox rustykey
+  - kerberos abuse
+  - timeroasting attack
+  - resource based constrained delegation
+  - rbcd exploitation
+  - dcsync attack
+  - active directory privilege escalation
 tags:
-  - linux
+  - windows
   - hard
 resources:
   - name: featured-image

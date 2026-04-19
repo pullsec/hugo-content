@@ -6,6 +6,11 @@ tags:
   - journey
 categories:
   - github
+keywords:
+  - github actions
+  - ci cd pipeline
+  - workflow automation
+  - static site deployment
 toc:
   enable: true
 featuredImagePreview: /posts/githubs/images/github.png

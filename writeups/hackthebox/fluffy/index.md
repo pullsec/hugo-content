@@ -7,6 +7,13 @@ categories:
   - writeups
 collections:
   - hackthebox
+keywords:
+  - hackthebox fluffy
+  - active directory exploitation
+  - shadow credentials attack
+  - ad cs abuse
+  - esc16 certificate abuse
+  - windows privilege escalation
 tags:
   - windows
   - medium
