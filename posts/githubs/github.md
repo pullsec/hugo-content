@@ -2,6 +2,7 @@
 title: github workflow
 date: 2025-05-12T18:26:49+02:00
 lastmod: 2025-06-16T23:00:00+02:00
+comment: false
 tags:
   - journey
 categories:

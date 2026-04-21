@@ -3,6 +3,7 @@ title: "CTF HackTheBox RustyKey"
 slug: "hackthebox-rustykey"
 date: 2026-01-19T22:15:55+02:00
 lastmod: 2026-04-18T06:12:22+02:00
+comment: false
 categories:
   - writeups
 collections:

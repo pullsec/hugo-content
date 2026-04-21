@@ -3,6 +3,7 @@ title: welcome world
 subtitle: getting started
 date: 2025-05-10T02:47:00+02:00
 lastmod: 2025-05-12T19:24:44+02:00
+comment: false
 tags:
   - journey
 categories:

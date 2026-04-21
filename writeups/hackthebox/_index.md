@@ -5,7 +5,6 @@ titleIcon: "fa-solid fa-cube"
 description: "Writeups from retired Hack The Box machines and challenges."
 sectionSlot: "Walkthroughs, exploitation paths, and lessons learned from HTB labs."
 pageStyle: "wide"
-
 cascade:
   params:
     type: posts
