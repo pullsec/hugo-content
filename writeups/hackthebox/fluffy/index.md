@@ -1,15 +1,13 @@
 ---
-title: "CTF HackTheBox fluffy"
-slug: "hackthebox-fluffy"
+title: "Hack The Box — fluffy"
 date: 2025-08-16T21:45:12+02:00
 lastmod: 2026-04-17T10:12:56+02:00
 comment: false
 categories:
   - writeups
 collections:
-  - hackthebox
+  - field notes
 keywords:
-  - hackthebox fluffy
   - active directory exploitation
   - shadow credentials attack
   - ad cs abuse

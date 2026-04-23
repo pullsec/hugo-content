@@ -1,15 +1,13 @@
 ---
-title: "CTF HackTheBox artificial"
-slug: "hackthebox-artificial"
+title: "Hack The Box — Artificial"
 date: 2025-06-28T17:15:55+02:00
 lastmod: 2026-04-18T05:12:22+02:00
 comment: false
 categories:
   - writeups
 collections:
-  - hackthebox
+  - field notes
 keywords:
-  - hackthebox artificial
   - tensorflow deserialization exploit
   - remote code execution web
   - docker environment exploitation
