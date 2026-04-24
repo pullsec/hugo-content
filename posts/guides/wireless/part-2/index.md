@@ -3,6 +3,7 @@ title: "Wireless Security — Part 2"
 linkTitle: "Part 2 — Lab Setup"
 date: 2026-02-10T12:48:10+02:00
 lastmod: 2026-04-24T19:20:11+02:00
+comment: false
 categories:
   - guides
 collections:

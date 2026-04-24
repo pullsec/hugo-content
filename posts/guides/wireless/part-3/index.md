@@ -3,6 +3,7 @@ title: "Wireless Security — Part 3"
 linkTitle: "Part 3 — WEP Attacks"
 date: 2026-03-31T18:48:10+02:00
 lastmod: 2026-04-24T20:20:44+02:00
+comment: false
 categories:
   - guides
 collections:
