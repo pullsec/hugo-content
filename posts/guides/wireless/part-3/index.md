@@ -20,8 +20,6 @@ keywords:
   - wireless packet injection
 ---
 
-## About
-
 In Part 3 of our Wireless Hacking series, we will delve into the practical application of wireless attacks. After exploring the basics of Wi-Fi and setting up a safe testing environment, it’s time to get hands-on. In this post, we’ll focus on attacking WEP (Wired Equivalent Privacy) — a once-standard but now outdated and highly vulnerable wireless encryption protocol.
 
 In this post, you’ll learn how WEP works, the cryptographic weaknesses it suffers from, and step-by-step how to exploit these flaws using tools like **aircrack-ng** and **aireplay-ng**. By the end, you’ll understand why WEP is obsolete and how attackers can recover a WEP key within minutes.

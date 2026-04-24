@@ -23,8 +23,6 @@ resources:
   - src: images/featured-image.png
 ---
 
-## About
-
 In this blog, we have introduced the basics of wireless hacking to lay the groundwork for understanding how wireless networks function and the security challenges they present. We began by discussing the fundamental concepts of WiFi, including its evolution, how it enables wireless communication, and the crucial terminology used in the realm of wireless networking.
 
 Additionally, we explored the history of WiFi—from its early days as a simple communication medium to its widespread adoption in homes, businesses, and public spaces. Understanding this evolution provides us with context for the vulnerabilities that exist in modern wireless systems today.

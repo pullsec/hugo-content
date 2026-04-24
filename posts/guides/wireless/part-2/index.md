@@ -20,8 +20,6 @@ keywords:
   - monitor mode setup
 ---
 
-## About
-
 In Part 2 of our Wireless Hacking series, we shift our focus from theory to practice.
 Having explored the fundamental concepts of wireless networks and security in the first part of this series, it's now time to transition from theoretical knowledge to hands-on experience. While understanding the theory behind wireless attacks is essential, practical skills are just as important in mastering wireless security. However, before we begin exploring the world of wireless hacking and penetration testing, it's critical to create a safe and controlled environment in which to learn
 
