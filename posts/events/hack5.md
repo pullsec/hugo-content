@@ -10,7 +10,7 @@ categories:
   - events
 toc:
   enable: false
-featuredImagePreview: /posts/events/images/event_hack.png
+featuredImagePreview: /images/covers/lehack.png
 expirationReminder:
   enable: false
 ---

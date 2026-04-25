@@ -10,9 +10,9 @@ categories:
   - thought
 toc:
   enable: false
-featuredImagePreview: /posts/intros/images/hey.png
 expirationReminder:
   enable: false
+featuredImage: "/images/covers/welcome.png"
 ---
 
 I created this blog to document what I build, what I break, and what I learn along the way.

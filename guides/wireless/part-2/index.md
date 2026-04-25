@@ -159,8 +159,8 @@ To begin, open **VMware Workstation** on your system. This graphical tool will a
 In the wizard that appears, select **"Installer disc image file (iso)"** and browse to the **Kali Linux ISO** you previously downloaded. Next, choose the OS type as **Linux**, and for the version, select **Debian 10.x 64-bit**—this works well for Kali Linux.
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="/posts/_wireless/images/vm_create.png" alt="create" style="width: 50%; margin-right: 10px;" />
-  <img src="/posts/_wireless/images/vm_conf.png" alt="conf" style="width: 50%;" />
+  <img src="images/vm_create.png" alt="create" style="width: 50%; margin-right: 10px;" />
+  <img src="images/vm_conf.png" alt="conf" style="width: 50%;" />
 </div>
 
 You’ll then be prompted to assign system resources to the VM. It is recommended to allocate **at least 2GB of RAM**, but **4GB (4096MB)** is ideal if your host machine allows it. You should also assign **2 or more CPU cores** to ensure smooth performance. After this, you’ll create a virtual hard disk—make sure it is **at least 20GB**, and **dynamically allocated** to save space.
@@ -203,7 +203,7 @@ To check your Wi-Fi card’s chipset, you can use the `lsusb` or `lspci` command
 To do this, plug your adapter into the host machine. Then, with the Kali VM powered off, open Edit Virtual Machine Settings. Click Add and choose USB Controller, then select USB Device and pick your USB Wi-Fi adapter from the list.
 
 <div style="display: flex; justify-content: center;">
-  <img src="/posts/_wireless/images/vm_usb.png" alt="usb" style="width: 50%; margin-right: 10px;">
+  <img src="images/vm_usb.png" alt="usb" style="width: 50%; margin-right: 10px;">
 </div>
 
 The first task is to prepare a location on your system where the downloaded driver files will be stored. This is important to keep everything organized and ensure that the installation files are easily accessible. To create the directory, you will use the `mkdir` command, which stands for "make directory." The `-p` flag ensures that if the directory does not already exist, it will be created. The directory we will create is called `src`, and it will be placed in your home directory (`~/`), which is a standard practice for organizing source files.

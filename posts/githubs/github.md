@@ -14,7 +14,7 @@ keywords:
   - static site deployment
 toc:
   enable: true
-featuredImagePreview: /posts/githubs/images/github.png
+featuredImagePreview: /images/covers/github.png
 expirationReminder:
   enable: false
 ---
