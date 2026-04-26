@@ -97,11 +97,10 @@ tags/           Tag taxonomy pages
 writeups/       Security writeups and walkthroughs
 ```
 
-### notes
-
-- Content is organized using Hugo-compatible markdown structure.
-- Writeups should use **page bundles** whenever images or local assets are needed.
-- Taxonomy folders are kept here so content remains fully separated from the engine.
+> [!NOTE]
+> - Content is organized using Hugo-compatible markdown structure.
+> - Writeups should use **page bundles** whenever images or local assets are needed.
+> - Taxonomy folders are kept here so content remains fully separated from the engine.
 
 ## content-workflow
 
