@@ -1,6 +1,5 @@
 ---
-title: lehack adventure 2025
-subtitle: the singularity
+title: lehack experience
 date: 2025-06-27T10:47:00+02:00
 lastmod: 2025-06-29T05:24:44+02:00
 comment: false

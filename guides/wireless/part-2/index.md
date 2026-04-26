@@ -191,7 +191,7 @@ The driver you’re installing, `8814au`, is designed for Wi-Fi cards that use t
 To check your Wi-Fi card’s chipset, you can use the `lsusb` or `lspci` command in your terminal (depending on whether it’s a USB or PCI card).
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo apt install -y linux-headers-$(uname -r) build-essential bc dkms git libelf-dev rfkill iw
 ```
 
@@ -211,14 +211,14 @@ After running this command, you’ll have a new folder named `src` in your home 
 Now that you're in the correct directory, it's time to download the driver. In this case, the driver files are hosted on GitHub, a popular platform for sharing and collaborating on code. The easiest way to get the driver is by cloning the GitHub repository that contains it. To clone a repository, you use the `git clone` command, which will create a local copy of the repository on your system. The repository we’re using is hosted at `https://github.com/morrownr/8814au.git`. This repository contains the necessary files to install the driver for your device.
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ git clone https://github.com/morrownr/8814au.git
 ```
 
 The installation process is handled by a script named `install-driver.sh`. Running this script will compile and install the necessary files to get the driver working on your system. There are two ways to execute the script, both of which require elevated privileges since you’re installing software that will affect system-wide settings.
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ sudo ./install-driver.sh
 ```
 
@@ -230,7 +230,7 @@ By following these steps, you will have successfully downloaded, installed, and 
 Once added, start the VM again. Inside Kali Linux, open a terminal and run:
 
 ```bash
-┌──(proxygeek㉿VMware-kali)-[~]
+┌──(pullsec㉿VMware-kali)-[~]
 └─$ iwconfig
 
 lo        no wireless extensions.
