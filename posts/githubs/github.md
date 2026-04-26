@@ -1,17 +1,22 @@
 ---
-title: github workflow
+title: "Automating Hugo Deployments with GitHub Actions"
 date: 2025-05-12T18:26:49+02:00
-lastmod: 2025-06-16T23:00:00+02:00
+lastmod: 2026-04-25T21:30:00+02:00
 comment: false
 tags:
-  - journey
+  - github-actions
+  - hugo
+  - ci-cd
+  - automation
 categories:
   - github
 keywords:
   - github actions
+  - hugo deployment
   - ci cd pipeline
-  - workflow automation
   - static site deployment
+  - git submodule workflow
+  - github pages deployment
 toc:
   enable: true
 featuredImagePreview: /images/covers/github.png
@@ -19,164 +24,319 @@ expirationReminder:
   enable: false
 ---
 
-Over time, working on cybersecurity and development projects, I realized something important: writing code is only a small part of the job.
-What really makes a difference is everything around it how you organize your work, how you structure your repositories, and how you think about your workflow.
+Over time, while working on my blog and documenting cybersecurity, homelab, and infrastructure projects, I realized that writing content was only one part of the process.
+
+The real challenge was making the publishing workflow clean, repeatable, and reliable.
+
+I wanted a setup where I could write content, push changes, and let the rest happen automatically without manually rebuilding or redeploying the site every time.
 
 <!--more-->
 
-This GitHub page is not just a place where I store code.  
-It’s more like a snapshot of how I work today how I organize things, how I improve over time, and how I try to stay flexible while building projects that actually last.
+This post explains how I currently organize and deploy my Hugo blog using GitHub Actions, Git submodules, the FixIt theme, and GitHub Pages.
 
-## architecture
+The goal is not to build an overly complex pipeline. Instead, the idea is to keep the architecture simple, predictable, and easy to maintain over time.
 
-To make things clearer, here’s a simplified view of how I organize my repositories and deployments.
+## Overview
 
-It’s nothing overly complex, but every part has a purpose.  
-I try to keep things separated and predictable, so I don’t lose time figuring out where things are or how they connect.
+The blog is built with Hugo and the FixIt theme. The main repository contains the site configuration, layouts, assets, workflows, and static files. The content itself is managed in a separate repository and included as a Git submodule.
 
-Here’s a high-level overview of how everything fits together:
+This separation helps keep the project cleaner:
+
+- the site repository manages the technical structure;
+- the content repository manages posts, pages, and write-ups;
+- the theme is versioned independently as a submodule;
+- GitHub Actions handles the build and deployment process.
+
+In practice, this gives me a workflow that is close to a lightweight GitOps model for a static site.
+
+## Architecture
+
+The current architecture is intentionally simple.
 
 ```mermaid
 flowchart LR
-    L[Local Files]
-    L2[Local Files]
+    A[Local Development<br/>config + layouts + assets]
+    B[Private Repository<br/>hugo-fixit]
+    C[Public Content Repo<br/>hugo-content]
+    D[FixIt Theme<br/>Git Submodule]
+    E[GitHub Actions]
+    F[Hugo Production Build]
+    G[GitHub Pages]
 
-    GH_Private[(GitHub Private Repo)]
-    GH_Public[(GitHub Public Repo)]
-
-    Actions[GitHub Actions]
-
-    GH_Pages[GitHub Pages]
-    Vercel[Vercel]
-    More[More...]
-
-    L -->|Git Push| GH_Private
-    L2 -->|Git Push| GH_Public
-
-    GH_Private -->|Git Submodule| GH_Public
-    GH_Public --> Actions
-
-    Actions -->|Deploy| GH_Pages
-    Actions -->|Deploy| Vercel
-    Actions -->|Deploy| More
+    A -->|git push| B
+    C -->|content submodule| B
+    D -->|theme submodule| B
+    B -->|trigger workflow| E
+    E -->|build site| F
+    F -->|deploy| G
 ```
 
-## branch
+The important part is the separation between the site engine and the content. The main repository does not directly own all Markdown content as normal files. Instead, it tracks the `content/` directory as a submodule.
 
-I’m following something close to Git Flow.  
-Not because it’s perfect, but because it gives me enough structure to stay organized, especially when projects grow or become messy.
+That means the blog can evolve in two separate layers:
 
-It helps me work on multiple things at once without breaking everything, and it keeps things readable over time.
+| Layer | Repository | Purpose |
+|---|---|---|
+| Site | `hugo-fixit` | Hugo config, layouts, assets, workflows, static files |
+| Content | `hugo-content` | Posts, write-ups, guides, project pages |
+| Theme | `themes/FixIt` | FixIt theme, tracked as a submodule |
+| Deployment | GitHub Actions | Build and deploy the final static site |
 
-Here’s how I usually organize my branches:
+## Repository structure
 
-- **`main`** – This is the production branch. Only stable and tested code goes here.
-- **`develop`** – Where ongoing work comes together before being ready for production.
-- **`feature/*`** – For working on specific features without impacting the rest.
-- **`bugfix/*`** – For fixing issues quickly and cleanly.
-- **`release/*`** – For preparing a proper release with final checks.
+The main site repository is organized around Hugo's standard structure.
 
-Nothing revolutionary, just something that works well for me and keeps things clean.
+```text
+.github/       GitHub Actions workflows
+archetypes/    Content templates
+assets/        SCSS, JavaScript, and processed assets
+config/        Modular Hugo configuration
+content/       Content repository mounted as a Git submodule
+data/          Data files used by Hugo
+layouts/       Layout overrides and custom partials
+static/        Static files served as-is
+themes/        Theme submodules
+public/        Generated site output
+```
+
+For the blog covers and reusable images, I use `static/images/covers/`.
+
+This keeps global visual assets separate from individual article bundles. When a cover is shared across the site or is not tied to one specific Markdown bundle, it belongs in `static/`.
+
+For example:
+
+```text
+static/images/covers/github.png
+static/images/covers/project.png
+static/images/covers/welcome.png
+```
+
+Then a post can reference it like this:
+
+```yaml
+featuredImagePreview: /images/covers/github.png
+```
+
+or for a section page:
+
+```yaml
+featuredImage: /images/covers/project.png
+```
+
+## Local development
+
+I prefer running Hugo inside a container instead of installing and managing Hugo directly on the host.
+
+This keeps the environment reproducible and avoids version mismatches between local builds and CI builds.
+
+For local development, I use Podman:
+
+```bash
+podman run --rm -it \
+  --userns=keep-id \
+  -p 1313:1313 \
+  -v "$PWD":/src:Z \
+  -w /src \
+  ghcr.io/gohugoio/hugo:v0.158.0 \
+  server --environment production --bind 0.0.0.0 --baseURL http://localhost:1313
+```
+
+The local preview is then available at:
+
+```text
+http://localhost:1313
+```
+
+Using a container gives me a clean and isolated development environment while still allowing live preview during editing.
+
+## Production build
+
+The production build is handled by GitHub Actions, but the same idea can be tested locally.
+
+A production build runs Hugo with minification enabled:
+
+```bash
+hugo --gc --minify
+```
+
+The generated output is written to:
+
+```text
+public/
+```
+
+This directory is not meant to be edited manually. It is build output.
+
+## GitHub Actions workflow
+
+Deployment is automated with GitHub Actions.
+
+The deployment workflow performs the following steps:
+
+1. checks out the repository;
+2. initializes submodules recursively;
+3. restores Hugo cache;
+4. installs Hugo Extended;
+5. builds the site;
+6. uploads the generated `public/` directory;
+7. deploys the site to GitHub Pages.
+
+A simplified version of the build flow looks like this:
 
 ```mermaid
-gitGraph
-   commit id: "Initial commit"
-   branch develop
-   checkout develop
-   commit id: "Init project structure"
-   commit id: "Setup CI/CD"
+flowchart TD
+    A[Push to main]
+    B[Checkout repository]
+    C[Fetch submodules]
+    D[Setup Hugo]
+    E[Build site]
+    F[Upload artifact]
+    G[Deploy to GitHub Pages]
 
-   branch feature/log-capture
-   checkout feature/log-capture
-   commit id: "Add log capture module"
-   checkout develop
-   merge feature/log-capture id: "Merge log-capture"
-
-   branch feature/api-hardening
-   checkout feature/api-hardening
-   commit id: "Improve API input validation"
-   commit id: "Add rate limiting"
-   checkout develop
-   merge feature/api-hardening id: "Merge api-hardening"
-
-   branch bugfix/token-expiry
-   checkout bugfix/token-expiry
-   commit id: "Fix token expiry bug"
-   checkout develop
-   merge bugfix/token-expiry id: "Merge token fix"
-
-   branch release/v1.0
-   checkout release/v1.0
-   commit id: "Prepare release v1.0"
-   checkout main
-   merge release/v1.0 id: "Release v1.0 to production"
-   commit id: "Hotfix README"
-
-   checkout develop
-   branch feature/ui-redesign
-   commit id: "Start UI redesign"
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
 ```
 
-## automation
+The key part is the checkout step with submodules enabled:
 
-To avoid repeating the same commands over and over again, I added a few small scripts to simplify my workflow.
+```yaml
+- name: Check out repository code
+  uses: actions/checkout@v6
+  with:
+    submodules: recursive
+    fetch-depth: 0
+```
 
-They’re not fancy tools, just simple helpers that make everyday tasks faster and less error-prone.
+This ensures that both the content submodule and the theme submodules are available during the build.
 
-> [!IMPORTANT]
-> Before using the scripts, make sure you're at the root of the project.  
-> You’ll also need Git installed and the GitHub CLI (`gh`) configured.
+The Hugo build step is straightforward:
 
-### Script Overview
+```yaml
+- name: Hugo build
+  run: hugo --gc --minify --logLevel info --cacheDir /tmp/hugo_cache
+```
 
-| Script                | Purpose                                                  |
-|----------------------|----------------------------------------------------------|
-| `github-branch.sh`   | Create a branch and optionally open a pull request        |
-| `github-deploy`      | Handle release workflow                                  |
-| `github-merged.sh`   | Clean up merged branches                                 |
+The final deployment uses GitHub Pages:
 
-> [!NOTE]
-> All the scripts are stored in a `.shell/` directory at the root of the project.
+```yaml
+- name: Deploy to GitHub Pages
+  id: deployment
+  uses: actions/deploy-pages@v5
+```
 
-I like keeping them in one place so it’s easy to maintain and update them if needed.
+## Content workflow
 
-### Usage
+The `content/` directory is a Git submodule. This is the most important part of the workflow to understand.
 
-#### Create a Branch
+When I update posts, guides, or project pages, I first commit those changes inside the content repository.
 
 ```bash
-./.shell/github-branch.sh
+cd content
+
+git checkout main
+git pull --rebase origin main
+
+# edit content...
+
+git add .
+git commit -m "feat(content): update posts"
+git push origin main
 ```
 
-This script guides you through the process and handles repetitive steps for you.
-
-#### deploy a release
+After that, I return to the main site repository and update the submodule pointer.
 
 ```bash
-./.scripts/github-deploy
+cd ..
+
+git add content
+git commit -m "chore(content): update content submodule"
+git pull --rebase origin main
+git push origin main
 ```
 
-Helps manage the release process while still letting you validate things manually.
+This tells the main site repository which exact content commit it should build from.
 
-#### clean up merged branches
+Without this step, the content repository may be updated, but the deployed site may still point to an older content revision.
+
+## Automatic content sync
+
+To reduce manual work, the content repository can trigger the main repository through a dispatch workflow.
+
+The general flow is:
+
+```mermaid
+flowchart LR
+    A[hugo-content push]
+    B[repository_dispatch]
+    C[Sync content submodule]
+    D[Commit updated submodule pointer]
+    E[Hugo build and deploy]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+```
+
+This makes the content workflow smoother because pushing to the content repository can automatically update the submodule pointer in the main repository.
+
+The deployment workflow also listens for the completion of the content sync workflow. This ensures that once the submodule pointer is updated, the site is rebuilt and redeployed automatically.
+
+## Theme updates
+
+The FixIt theme is also managed as a Git submodule.
+
+To update the theme manually:
 
 ```bash
-./.scripts/github-merged.sh
+git submodule update --remote --merge themes/FixIt
+
+git add themes/FixIt
+git commit -m "chore(deps): update FixIt theme"
+git push origin main
 ```
 
-Helps keep your repository clean after merges.
+Theme updates are intentionally separated from content updates. This makes it easier to troubleshoot problems because content changes and theme changes do not get mixed together.
 
-> [!NOTE]
-> Protected branches like `main` and `develop` cannot be deleted for safety reasons.
+## Common pitfalls
 
-### example workflow
+Working with submodules is powerful, but there are a few traps.
 
-```bash
-./.shell/github-branch.sh
-./.shell/github-merged.sh
-./.shell/github-deploy
+| Issue | Cause | Fix |
+|---|---|---|
+| Content changes are not visible | Main repo still points to an older submodule commit | Commit the updated `content` pointer in `hugo-fixit` |
+| Cannot push from `content/` | Submodule is in detached HEAD | Run `git checkout main` inside `content/` |
+| GitHub Actions build misses content | Submodules were not initialized | Use `submodules: recursive` in checkout |
+| Local preview differs from production | Different Hugo versions | Use the same Hugo container version locally and in CI |
+| Images do not resolve | Wrong path or mixed Page Resource/static usage | Use `/images/covers/name.png` for files in `static/images/covers/` |
+
+This setup is not overly complex, but it gives me enough structure to keep the blog maintainable.
+
+The main benefits are:
+
+- content and site logic are separated;
+- the theme can be updated independently;
+- deployments are automated;
+- local builds are reproducible;
+- the workflow stays predictable over time.
+
+It also makes experimentation safer. I can work on layouts, covers, configuration, or content without mixing everything into one large unstructured repository.
+
+The final workflow is simple:
+
+```text
+write content
+push content
+sync submodule
+build Hugo site
+deploy to GitHub Pages
 ```
 
-> [!TIP]
-> You can create aliases to make these commands easier to use.
+Most of the heavy lifting is handled by GitHub Actions, while Git remains the source of truth for both content and configuration.
+
+This gives me a clean and reproducible publishing workflow for my Hugo blog, without needing to manually rebuild or redeploy the site every time I update something.
 
