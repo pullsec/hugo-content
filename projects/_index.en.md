@@ -13,7 +13,5 @@ autoTranslate:
 cascade:
   params:
     type: posts
-resources:
-  - name: featured-image
-    src: images/banner.png
+featuredImage: "/images/covers/project.png"
 ---

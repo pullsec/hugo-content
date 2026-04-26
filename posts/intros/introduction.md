@@ -12,7 +12,7 @@ toc:
   enable: false
 expirationReminder:
   enable: false
-featuredImage: "/images/covers/welcome.png"
+featuredImagePreview: "/images/covers/welcome.png"
 ---
 
 I created this blog to document what I build, what I break, and what I learn along the way.
