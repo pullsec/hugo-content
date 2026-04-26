@@ -129,8 +129,18 @@ I prefer running Hugo inside a container instead of installing and managing Hugo
 
 This keeps the environment reproducible and avoids version mismatches between local builds and CI builds.
 
-For local development, I use Podman:
+For local development:
+```bash
+podman run --rm -it \
+  --userns=keep-id \
+  -p 1313:1313 \
+  -v "$PWD":/src:Z \
+  -w /src \
+  ghcr.io/gohugoio/hugo:0.150.0 \
+  server --bind 0.0.0.0 --baseURL http://localhost:1313
+```
 
+For local production:
 ```bash
 podman run --rm -it \
   --userns=keep-id \
