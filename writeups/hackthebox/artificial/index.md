@@ -1,12 +1,13 @@
 ---
-title: "Hack The Box — Artificial"
+title: "Artificial"
+description: "How I approached and solved this machine."
 date: 2025-06-28T17:15:55+02:00
 lastmod: 2026-04-18T05:12:22+02:00
 comment: false
 categories:
   - writeups
 collections:
-  - field notes
+  - machines
 keywords:
   - tensorflow deserialization exploit
   - remote code execution web

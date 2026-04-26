@@ -1,12 +1,13 @@
 ---
-title: "Hack The Box — RustyKey"
+title: "RustyKey"
+description: "A breakdown of my approach and key takeaways."
 date: 2026-01-19T22:15:55+02:00
 lastmod: 2026-04-18T06:12:22+02:00
 comment: false
 categories:
   - writeups
 collections:
-  - field notes
+  - machines
 keywords:
   - kerberos abuse
   - timeroasting attack

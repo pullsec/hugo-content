@@ -1,12 +1,13 @@
 ---
-title: "Hack The Box — fluffy"
+title: "Fluffy"
+description: "What worked, what didn’t, and how I got root."
 date: 2025-08-16T21:45:12+02:00
 lastmod: 2026-04-17T10:12:56+02:00
 comment: false
 categories:
   - writeups
 collections:
-  - field notes
+  - machines
 keywords:
   - active directory exploitation
   - shadow credentials attack
