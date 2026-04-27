@@ -1,5 +1,5 @@
 ---
-title: "Learning wireless security from scratch"
+title: "Learning wireless security"
 date: 2026-01-20T10:48:10+02:00
 lastmod: 2026-04-24T18:30:44+02:00
 comment: false

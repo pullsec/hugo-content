@@ -1,5 +1,5 @@
 ---
-title: "Automating Hugo Deployments with GitHub Actions"
+title: "hugo deployments"
 date: 2025-05-12T18:26:49+02:00
 lastmod: 2026-04-25T21:30:00+02:00
 comment: false
