@@ -6,10 +6,10 @@ comment: false
 categories:
   - guides
 collections:
-  - wireless
+  - network
 tags:
-  - wifi
-  - networking
+  - wireless
+  - fundamentals
   - security
 keywords:
   - wireless security fundamentals

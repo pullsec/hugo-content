@@ -6,11 +6,11 @@ comment: false
 categories:
   - guides
 collections:
-  - wireless
+  - network
 tags:
-  - wifi
-  - kali-linux
-  - lab-setup
+  - wireless
+  - lab
+  - setup
 keywords:
   - wireless security lab setup
   - kali linux wireless adapter

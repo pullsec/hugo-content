@@ -6,11 +6,11 @@ comment: false
 categories:
   - guides
 collections:
-  - wireless
+  - network
 tags:
-  - wifi
+  - wireless
   - wep
-  - aircrack-ng
+  - attack
 keywords:
   - wep cracking
   - aircrack-ng wep attack

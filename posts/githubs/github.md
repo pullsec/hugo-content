@@ -1,15 +1,15 @@
 ---
-title: "hugo deployments"
+title: "github workflow"
 date: 2025-05-12T18:26:49+02:00
 lastmod: 2026-04-25T21:30:00+02:00
 comment: false
 tags:
-  - github-actions
-  - hugo
+  - github
+  - workflow
   - ci-cd
   - automation
 categories:
-  - github
+  - infrastructure
 keywords:
   - github actions
   - hugo deployment
