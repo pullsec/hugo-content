@@ -237,12 +237,6 @@ After extracting the password hashes from the `users.db` database, I saved one o
 └─$ john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt --format=Raw-md5
 ```
 
-{{% fixit-encryptor "mattp005numbertwo" "Cracked password" %}}
-
-  `mattp005numbertwo`
-
-{{% /fixit-encryptor %}}
-
 John successfully cracked the hash quickly, revealing the password.
 This step is crucial as it allows gaining credentials that can be used for further access or privilege escalation within the target system.
 
@@ -254,15 +248,10 @@ ssh gael@artificial.htb
 
 When prompted, I entered the password and successfully logged in as the user `gael`. This provided me with a more stable shell and expanded my ability to explore the system for further privilege escalation opportunities.
 
-{{% fixit-encryptor "c083ae3864be12d2966ad02072d16cc9" "Flag User" %}}
-
   ```bash
   ┌──(pullsec㉿pen-301101)-[~/ctf/HackTheBox/artificial.htb]
   └─$ gael@artificial:~$ cat user.txt 
-  c083ae3864be12d2966ad02072d16cc9
   ```
-
-{{% /fixit-encryptor %}}
 
 ## Privilege Escalation
 
@@ -337,12 +326,6 @@ Using john with the appropriate bcrypt format and the rockyou wordlist, the pass
 ┌──(pullsec㉿pen-301101)-[~/ctf/HackTheBox/artificial.htb]
 └─$ john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt --format=bcrypt
 ```
-
-{{% fixit-encryptor "!@#$%^" "Cracked password" %}}
-
-  `!@#$%^`
-
-{{% /fixit-encryptor %}}
 
 Discovering and forwarding an internal service port
 
@@ -445,15 +428,10 @@ If you recovered an SSH private key, you can try to connect back to the machine 
 └─$ ssh -i ./restore/root/.ssh/id_rsa root@Artificial.htb
 ```
 
-{{% fixit-encryptor "52549124ced12de9d90ed9c0bb86f3f9" "Flag Root" %}}
-
    ```bash
   ┌──(pullsec㉿pen-301101)-[~/ctf/HackTheBox/artificial.htb]
   └─$ root@artificial:~# cat root.txt
-  52549124ced12de9d90ed9c0bb86f3f9
   ```
-
-{{% /fixit-encryptor %}}
 
 ## Conclusion
 

