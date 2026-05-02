@@ -7,18 +7,18 @@ type: posts
 toc:
   enable: true
 tags:
-  - ai
-  - learning
-  - cybersecurity
-  - workflow
+  - journey
 categories:
-  - thoughts
+  - thought
+expirationReminder:
+  enable: false
+featuredImagePreview: "/images/covers/ia.png"
 ---
-
-## Introduction
 
 I’ve been learning cybersecurity through labs, writeups, and by building my own environment.
 At the beginning, like most people, I relied a lot on Google and StackOverflow.  
+
+<!--more-->
 
 Whenever something didn’t work, I would search for the error, open multiple tabs, and try to find something that looked close enough to my situation.
 
