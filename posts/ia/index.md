@@ -35,6 +35,17 @@ Instead of searching for a solution, I start by describing the problem. I includ
 
 It feels less like searching, and more like exploring.
 
+```mermaid
+flowchart LR
+    A["Problem"]
+        --> B["Search"]
+        --> C["Try fix"]
+
+    D["Problem"]
+        --> E["Describe"]
+        --> F["Iterate with AI"]
+        --> G["Understand"]
+```
 
 ## What AI Actually Changed
 
@@ -44,19 +55,120 @@ With StackOverflow, everything is static. You read what already exists and try t
 
 The shift is not just personal — it’s visible at a larger scale.
 
-```text
-# Observed shift in developer workflow
-
-Year    StackOverflow        AI (ChatGPT / OpenAI)
--------------------------------------------------------
-2020    ██████████           ██
-2022    ████████             █████
-2023    ██████               ███████
-2024    █████                ████████
-2025    ██                   ██████████
-2026    █                    ████████████
-
+```echarts
+{
+  "title": {
+    "text": "Shift in Developer Workflow",
+    "subtext": "From static answers to interactive debugging",
+    "left": "center"
+  },
+  "tooltip": {
+    "trigger": "axis"
+  },
+  "legend": {
+    "top": "12%",
+    "data": [
+      "StackOverflow-style search",
+      "AI-assisted debugging"
+    ]
+  },
+  "grid": {
+    "left": "5%",
+    "right": "5%",
+    "bottom": "8%",
+    "top": "26%",
+    "containLabel": true
+  },
+  "xAxis": {
+    "type": "category",
+    "boundaryGap": false,
+    "data": [
+      "2018",
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025",
+      "2026"
+    ]
+  },
+  "yAxis": {
+    "type": "value",
+    "min": 0,
+    "max": 100,
+    "axisLabel": {
+      "formatter": "{value}%"
+    }
+  },
+  "series": [
+    {
+      "name": "StackOverflow-style search",
+      "type": "line",
+      "smooth": true,
+      "symbol": "circle",
+      "symbolSize": 7,
+      "lineStyle": {
+        "width": 3
+      },
+      "areaStyle": {
+        "opacity": 0.12
+      },
+      "data": [
+        100,
+        98,
+        96,
+        94,
+        85,
+        65,
+        48,
+        30,
+        20
+      ],
+      "markLine": {
+        "symbol": "none",
+        "lineStyle": {
+          "type": "dashed"
+        },
+        "data": [
+          {
+            "xAxis": "2022",
+            "label": {
+              "formatter": "ChatGPT released"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "AI-assisted debugging",
+      "type": "line",
+      "smooth": true,
+      "symbol": "circle",
+      "symbolSize": 7,
+      "lineStyle": {
+        "width": 3
+      },
+      "areaStyle": {
+        "opacity": 0.12
+      },
+      "data": [
+        2,
+        3,
+        5,
+        8,
+        25,
+        55,
+        72,
+        88,
+        95
+      ]
+    }
+  ]
+}
 ```
+
 > trend: static answers ↓ | interactive debugging ↑
 
 This is not exact data, but it reflects a trend that is becoming hard to ignore. Public traffic data also shows that StackOverflow usage started to decline shortly after the release of ChatGPT in late 2022, reinforcing this shift.
