@@ -26,15 +26,18 @@ expirationReminder:
 
 Over time, while working on my blog and documenting cybersecurity, homelab, and infrastructure projects, I realized that writing content was only one part of the process.
 
+<!--more-->
+
 The real challenge was making the publishing workflow clean, repeatable, and reliable.
 
 I wanted a setup where I could write content, push changes, and let the rest happen automatically without manually rebuilding or redeploying the site every time.
 
-<!--more-->
-
 This post explains how I currently organize and deploy my Hugo blog using GitHub Actions, Git submodules, the FixIt theme, and GitHub Pages.
 
 The goal is not to build an overly complex pipeline. Instead, the idea is to keep the architecture simple, predictable, and easy to maintain over time.
+
+> [!IMPORTANT]
+> The goal is not to build a complex CI/CD pipeline, but a workflow that is predictable, reproducible, and requires minimal manual intervention.
 
 ## Overview
 
@@ -47,7 +50,9 @@ This separation helps keep the project cleaner:
 - the theme is versioned independently as a submodule;
 - GitHub Actions handles the build and deployment process.
 
-In practice, this gives me a workflow that is close to a lightweight GitOps model for a static site.
+In practice, this gives me a workflow close to a lightweight GitOps model for a static site.
+
+Instead of manually deploying content, every change is versioned, reproducible, and automatically deployed.
 
 ## Architecture
 
@@ -71,6 +76,11 @@ flowchart LR
     F -->|deploy| G
 ```
 
+> [!NOTE]
+> - Content is versioned separately  
+> - The site is built automatically  
+> - Deployment is handled by GitHub Actions
+
 The important part is the separation between the site engine and the content. The main repository does not directly own all Markdown content as normal files. Instead, it tracks the `content/` directory as a submodule.
 
 That means the blog can evolve in two separate layers:
@@ -85,18 +95,47 @@ That means the blog can evolve in two separate layers:
 ## Repository structure
 
 The main site repository is organized around Hugo's standard structure.
+This structure follows Hugo conventions, but also keeps the project easy to navigate and maintain over time.
 
-```text
-.github/       GitHub Actions workflows
-archetypes/    Content templates
-assets/        SCSS, JavaScript, and processed assets
-config/        Modular Hugo configuration
-content/       Content repository mounted as a Git submodule
-data/          Data files used by Hugo
-layouts/       Layout overrides and custom partials
-static/        Static files served as-is
-themes/        Theme submodules
-public/        Generated site output
+```file-tree
+- name: hugo-fixit
+  type: dir
+  children:
+    - name: .github
+      type: dir
+      children:
+        - name: workflows
+          type: dir
+    - name: archetypes
+      type: dir
+    - name: assets
+      type: dir
+    - name: config
+      type: dir
+    - name: content
+      type: dir
+      children:
+        - name: "submodule: hugo-content"
+          type: file
+    - name: data
+      type: dir
+    - name: layouts
+      type: dir
+    - name: static
+      type: dir
+      children:
+        - name: images
+          type: dir
+          children:
+            - name: covers
+              type: dir
+    - name: themes
+      type: dir
+      children:
+        - name: "FixIt (submodule)"
+          type: dir
+    - name: public
+      type: dir
 ```
 
 For the blog covers and reusable images, I use `static/images/covers/`.
@@ -129,6 +168,9 @@ I prefer running Hugo inside a container instead of installing and managing Hugo
 
 This keeps the environment reproducible and avoids version mismatches between local builds and CI builds.
 
+{{< tabs >}}
+
+{{% tab title="Development" %}}
 For local development:
 ```bash
 podman run --rm -it \
@@ -139,7 +181,9 @@ podman run --rm -it \
   ghcr.io/gohugoio/hugo:0.150.0 \
   server --bind 0.0.0.0 --baseURL http://localhost:1313
 ```
+{{% /tab %}}
 
+{{% tab title="Production" %}}
 For local production:
 ```bash
 podman run --rm -it \
@@ -150,6 +194,8 @@ podman run --rm -it \
   ghcr.io/gohugoio/hugo:v0.158.0 \
   server --environment production --bind 0.0.0.0 --baseURL http://localhost:1313
 ```
+{{% /tab %}}
+{{< /tabs >}}
 
 The local preview is then available at:
 
@@ -157,7 +203,8 @@ The local preview is then available at:
 http://localhost:1313
 ```
 
-Using a container gives me a clean and isolated development environment while still allowing live preview during editing.
+> [!TIP]
+> Using containers avoids version mismatch issues between local development and CI builds.
 
 ## Production build
 

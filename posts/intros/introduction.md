@@ -16,18 +16,37 @@ featuredImagePreview: "/images/covers/welcome.png"
 
 I created this blog to document what I build, what I break, and what I learn along the way.
 
-I’ve spent time exploring different areas of tech, from development to cybersecurity, and slowly moved toward systems, networking, and infrastructure. What I enjoy most is understanding how things actually work, not just using them, but figuring out what’s behind.
-
 <!--more-->
 
-Most of the time, I’m just working on small projects, testing setups, or trying to improve things in my lab. Some of it works, some of it doesn’t, and that’s fine. It’s part of the process.
+I’ve spent time exploring different areas of tech, from development to cybersecurity, and slowly moved toward systems, networking, and infrastructure.
 
-There’s no real routine, but it often ends the same way late nights, a terminal open, trying to figure something out, fixing one thing and breaking another.
+At some point, I realized that what I enjoy most isn’t just using tools or following tutorials.
+It’s trying to understand what’s actually happening behind the scenes.
 
-Some posts will be clean and structured, others will just be notes written after those sessions.
+Why something behaves the way it does.
+Why something breaks.
+And sometimes, why it works when it probably shouldn’t.
 
-I don’t really have a strict plan for this blog. It’s more a way to keep track of progress, ideas, and mistakes over time.
+Most of the time, I’m just working on small projects, testing setups, or messing around in my lab.
+Nothing fancy. Just trying things, seeing what happens, and going from there.
+
+Some of it works.
+A lot of it doesn’t.
+
+But the interesting part is always in between, when something doesn’t behave like expected, and you start digging into it.
+
+There’s no real routine. 
+It usually ends the same way: late nights, a terminal open, trying to figure something out.
+Fixing one thing, breaking another, and going a bit deeper each time.
+
+> [!NOTE]
+> This blog is just a way to keep track of that process.
+> Not something polished or perfectly explained just real experiments, notes, and things I’m trying to understand.
+
+Some posts will be clean and structured.
+Others will just be notes written after those sessions, while things are still fresh.
+
+I don’t really have a strict plan for this blog.
+It’s more a way to keep track of progress, ideas, and mistakes over time.
 
 If something here helps someone, even a little, then it’s already worth it.
-
-This is not meant to be perfect. Just something real.
