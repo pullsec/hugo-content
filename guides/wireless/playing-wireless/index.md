@@ -134,34 +134,11 @@ That means parts of the plaintext are already known.
 
 ## Why Traffic Matters
 
-To exploit this weakness, the goal is simple:
+To exploit this weakness, the goal is simple: collect as many packets as possible.
 
-collect as many packets as possible.
+By switching your adapter to monitor mode, you can passively capture encrypted traffic, broadcast packets, and ARP requests.
 
-By switching your adapter to monitor mode, you can passively capture:
-
-- encrypted traffic
-- broadcast packets
-- ARP requests
-
-Over time, this gives you:
-
-- repeated IVs
-- reusable keystream fragments
-- enough data to start breaking the encryption
-
-## What Comes Next
-
-This is the foundation of WEP attacks.
-
-From here, the process becomes practical:
-
-- capture traffic
-- identify useful packets (like ARP)
-- increase traffic if needed (injection)
-- recover the key
-
-The next steps will focus on turning this theory into actual attacks
+Over time, this gives you repeated IVs, reusable keystream fragments, and enough data to start breaking the encryption.
 
 ### Capture Ciphertext
 
@@ -176,8 +153,6 @@ This gives you access to:
 - management frames  
 
 These packets are the raw material of the attack.
-
----
 
 ### Known Plaintext (ARP)
 
@@ -195,8 +170,6 @@ Parts of their content are always the same, which means:
 
 This makes ARP packets extremely valuable for WEP attacks.
 
----
-
 ### The Limitation
 
 The main constraint is volume.
@@ -207,8 +180,6 @@ To successfully recover the key, you need:
 - many different IVs  
 
 On a quiet network, this can take a very long time.
-
----
 
 ### ARP Replay Attack
 
@@ -303,6 +274,7 @@ Wifite can be useful in a lab because it quickly identifies nearby networks, enc
 But automation should come after understanding.
 
 If you use the tool without knowing what happens underneath, the result is just output on a screen.
+
 If you understand the workflow, the tool becomes a shortcut.
 
 ## Conclusion
