@@ -142,57 +142,52 @@ Over time, this gives you repeated IVs, reusable keystream fragments, and enough
 
 ### Capture Ciphertext
 
-The first step is to capture encrypted traffic.
+The first step in any WEP attack is to capture encrypted traffic.
 
-By switching your wireless adapter to monitor mode, you can passively collect packets from all nearby networks — without being connected.
+By switching your wireless adapter into monitor mode, you move from being a normal client to a passive observer of the wireless environment. Instead of only seeing traffic addressed to your device, you can now capture every frame transmitted over the air within range.
 
-This gives you access to:
+This includes encrypted data frames exchanged between clients and the access point, broadcast traffic sent to all devices, and various management frames that describe how the network operates.
 
-- encrypted data  
-- broadcast traffic  
-- management frames  
-
-These packets are the raw material of the attack.
+At this stage, you are not interacting with the network — you are simply collecting data.
+These captured packets form the raw material of the attack. Without them, nothing else is possible.
 
 ### Known Plaintext (ARP)
 
 Capturing traffic is not enough.
 
-To break WEP, you also need **known plaintext**.
+The critical requirement is the ability to recover part of the keystream, and that requires knowing both the ciphertext and a portion of the original plaintext.
 
-This is where ARP becomes critical.
+This is where ARP becomes essential.
 
-ARP packets are predictable by design.  
-Parts of their content are always the same, which means:
+ARP (Address Resolution Protocol) is inherently predictable. Its structure is simple, and many parts of its payload remain constant across requests and responses. Because of this, an attacker can reliably guess portions of the plaintext contained in captured ARP packets.
 
-- part of the plaintext is already known  
-- part of the keystream can be recovered  
+Once part of the plaintext is known, it can be XORed with the corresponding ciphertext to recover a fragment of the keystream. This recovered keystream can then be reused to analyze other packets or gradually reconstruct the encryption key.
 
-This makes ARP packets extremely valuable for WEP attacks.
+In practice, ARP packets act as a bridge between encrypted data and usable information, making them one of the most valuable targets in WEP attacks.
 
 ### The Limitation
 
 The main constraint is volume.
 
-To successfully recover the key, you need:
+Recovering a usable amount of keystream requires observing many packets, each generated with different initialization vectors (IVs). Because WEP uses a relatively small IV space, these values are reused frequently, but not always fast enough in low-traffic environments.
 
-- thousands of packets  
-- many different IVs  
+On a busy network, this is not an issue — packets are constantly exchanged, and IVs accumulate quickly.
+However, on a quiet network, collecting enough data can take a significant amount of time, making the attack impractical if you rely only on passive capture.
 
-On a quiet network, this can take a very long time.
+This is where the attack shifts from observation to interaction.
 
 ### ARP Replay Attack
 
 To solve this problem, attackers generate traffic instead of waiting for it.
 
-With an ARP replay attack:
+The idea behind an ARP replay attack is simple: take a captured ARP request and inject it back into the network repeatedly. Because the access point treats this request as legitimate, it processes it and generates a response each time.
 
-- a captured ARP request is reused  
-- it is injected repeatedly into the network  
-- the access point responds each time  
-- new packets with new IVs are generated  
+Each response is encrypted with a new initialization vector, producing fresh ciphertext and new keystream material.
 
-This dramatically increases the amount of usable data.
+By repeating this process, the attacker forces the network to generate a large amount of traffic in a very short time. What would normally take minutes or hours can now be achieved in seconds.
+
+This transforms a passive attack into an active one.
+Instead of waiting for enough data to appear, you create the conditions needed to break the encryption.
 
 ```mermaid
 graph TD
