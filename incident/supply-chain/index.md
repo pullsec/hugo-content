@@ -14,6 +14,14 @@ tags:
   - cloud
   - secrets
   - ci-cd
+keywords:
+  - xinference
+  - pypi supply chain attack
+  - malicious python package
+  - dependency compromise
+  - ci cd security
+  - secrets exfiltration
+  - python import execution
 categories:
   - incident
 collections:
