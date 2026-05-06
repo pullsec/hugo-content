@@ -13,6 +13,7 @@ categories:
 expirationReminder:
   enable: false
 featuredImagePreview: "/images/covers/ia.png"
+reward: false
 ---
 
 I’ve been learning cybersecurity through labs, writeups, and by building my own environment.

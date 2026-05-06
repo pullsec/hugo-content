@@ -12,6 +12,7 @@ toc:
 featuredImagePreview: /images/covers/lehack.png
 expirationReminder:
   enable: false
+reward: false
 ---
 
 LeHack, one of the biggest cybersecurity events in Europe, had been on my radar for quite some time.

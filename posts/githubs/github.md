@@ -22,6 +22,7 @@ toc:
 featuredImagePreview: /images/covers/github.png
 expirationReminder:
   enable: false
+reward: false
 ---
 
 Over time, while working on my blog and documenting cybersecurity, homelab, and infrastructure projects, I realized that writing content was only one part of the process.
