@@ -1,165 +1,587 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/status-%20development-orange?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/status-active-success?style=for-the-badge" />
   <img src="https://img.shields.io/badge/type-content-blue?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Hugo-FF4088?style=for-the-badge&logo=hugo&logoColor=white" />
-  <img src="https://img.shields.io/badge/content-public-brightgreen?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Hugo-v0.164.0-FF4088?style=for-the-badge&logo=hugo&logoColor=white" />
   <img src="https://img.shields.io/github/license/pullsec/hugo-content?style=for-the-badge" />
 </p>
 
 <p align="center">
+  <a href="https://pullsec.io/">Website</a>
+  ·
   <a href="https://github.com/pullsec/hugo-content/issues">Report Bug</a>
   ·
-  <a href="https://github.com/pullsec/hugo-content/pulls">Request Feature</a>
+  <a href="https://github.com/pullsec/hugo-content/pulls">Contribute</a>
 </p>
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li><a href="#about">about</a></li>
-    <li><a href="#architecture">architecture</a></li>
-    <li><a href="#publishing-model">publishing-model</a></li>
-    <li><a href="#repository-structure">repository-structure</a></li>
-    <li><a href="#content-workflow">content-workflow</a></li>
-    <li><a href="#integration-with-the-main-blog">integration-with-the-main-blog</a></li>
-    <li><a href="#faq">faq</a></li>
-  </ol>
-</details>
 
 ---
 
-## about
+## Table of Contents
 
-This repository contains the **public content** of the PullSec blog.
+- [About](#about)
+- [Architecture](#architecture)
+- [Publishing Model](#publishing-model)
+- [Repository Structure](#repository-structure)
+- [Content Types](#content-types)
+- [Content Workflow](#content-workflow)
+- [Creating Content](#creating-content)
+- [Page Bundles and Assets](#page-bundles-and-assets)
+- [Front Matter](#front-matter)
+- [Integration with the Main Blog](#integration-with-the-main-blog)
+- [Local Preview](#local-preview)
+- [Git Workflow](#git-workflow)
+- [Common Pitfalls](#common-pitfalls)
+- [FAQ](#faq)
 
-It includes writeups, technical notes, project pages, and public-facing markdown content used by the main Hugo site.  
-The blog engine, theme integration, layouts, and deployment workflows are managed separately in a private repository.
+## About
 
-This separation keeps the architecture clean:
+This repository contains the public editorial content of the
+[PullSec](https://pullsec.io/) technical blog.
 
-- **content stays public**
-- **the site engine stays private**
-- **the deployment pipeline remains isolated**
+It contains Markdown documents and associated resources covering topics such as:
 
-## architecture
+- cybersecurity research;
+- CVE and vulnerability analysis;
+- security incidents;
+- system and network administration;
+- infrastructure and homelab projects;
+- technical guides;
+- security news;
+- CTF and Hack The Box write-ups.
+
+This repository intentionally contains **content only**.
+
+The Hugo engine, FixIt theme, layouts, assets, archetypes, configuration and
+deployment workflows are maintained separately in the main `hugo-fixit`
+repository.
+
+This separation keeps the project architecture modular and allows the
+published content to remain publicly accessible independently from the site
+infrastructure.
+
+## Architecture
 
 > [!IMPORTANT]
-> This repository is intentionally content-only and is consumed by the main blog as a Git submodule.
+> `hugo-content` is not a standalone Hugo website.
+>
+> It is consumed by the main Hugo project as the `content/` Git submodule.
 
 ```mermaid
 flowchart LR
-    A[Local Content Editing<br/>Markdown + media]
+    A[Content Authoring<br/>Markdown + Media]
     B[Public Repository<br/>hugo-content]
-    C[Private Blog Engine<br/>hugo-fixit]
-    D[GitHub Actions]
-    E[Hugo Production Build]
-    F[Public Website<br/>pullsec.io]
+    C[Main Blog Repository<br/>hugo-fixit]
+    D[Hugo + FixIt]
+    E[GitHub Actions]
+    F[GitHub Pages]
+    G[Public Website<br/>pullsec.io]
 
-    A -->|git push| B
-    B -->|git submodule| C
-    C -->|trigger workflow| D
-    D -->|build site| E
-    E -->|deploy| F
+    A -->|git commit + push| B
+    B -->|Git submodule| C
+    C --> D
+    D -->|production build| E
+    E --> F
+    F --> G
 ```
 
-### workflow summary
+### Workflow Summary
 
-| Stage        | Component        | Role                            | Description                                      |
-|--------------|------------------|---------------------------------|--------------------------------------------------|
-| Authoring    | Local Workspace  | Content creation                | Write and update markdown content                |
-| Source       | hugo-content     | Public content store            | Version control for published content            |
-| Integration  | hugo-fixit       | Site engine                     | Pulls content via Git submodule                  |
-| CI/CD        | GitHub Actions   | Build automation                | Generates and deploys the final static site      |
-| Deployment   | GitHub Pages     | Hosting                         | Serves the final website                         |
+| Stage | Component | Role | Description |
+| --- | --- | --- | --- |
+| Authoring | Local workspace | Content creation | Write Markdown and manage media |
+| Content | `hugo-content` | Public content store | Version control for published content |
+| Integration | `hugo-fixit` | Main Hugo project | Consumes this repository as `content/` |
+| Rendering | Hugo + FixIt | Static generation | Processes content into the website |
+| CI/CD | GitHub Actions | Automation | Builds and deploys the website |
+| Hosting | GitHub Pages | Deployment | Serves the generated static site |
+| Production | `pullsec.io` | Public endpoint | Published PullSec blog |
 
-## publishing-model
+## Publishing Model
 
-> [!NOTE]
-> This repository is public by design. Only the content is exposed.  
-> The blog engine, configuration, layouts, and deployment logic are kept private.
+This repository is public by design.
 
-| Repository         | Visibility | Purpose                                  |
-|--------------------|-----------|------------------------------------------|
-| `hugo-content`     | Public    | Writeups, posts, pages, and public media |
-| `hugo-fixit`       | Private   | Hugo engine, config, layouts, workflows  |
-| `hugo-community`   | Public    | Giscus / GitHub Discussions backend      |
+The content itself is intended to be published and shared openly, while the
+site infrastructure is maintained separately.
 
-## repository-structure
+| Repository | Purpose |
+| --- | --- |
+| `hugo-content` | Public Markdown content and associated media |
+| `hugo-fixit` | Hugo configuration, themes, layouts, archetypes and CI/CD |
+| `hugo-community` | Community functionality and discussion backend |
 
-```bash
-about/          About page content
-collections/    Collection taxonomy pages
-categories/     Category taxonomy pages
-friends/        Friends / blogroll page content
-posts/          General blog articles
-projects/       Project pages
-tags/           Tag taxonomy pages
-writeups/       Security writeups and walkthroughs
+The separation can be represented as:
+
+```text
+hugo-fixit
+│
+├── archetypes/
+├── assets/
+├── config/
+├── layouts/
+├── themes/
+│
+└── content/ ───────────────► hugo-content
 ```
 
-> [!NOTE]
-> - Content is organized using Hugo-compatible markdown structure.
-> - Writeups should use **page bundles** whenever images or local assets are needed.
-> - Taxonomy folders are kept here so content remains fully separated from the engine.
+The main repository controls **how content is rendered**.
 
-## content-workflow
+This repository controls **what content is published**.
 
-### clone repository
+## Repository Structure
+
+```text
+.
+├── .github/
+│   └── workflows/       Repository automation
+│
+├── about/               About and profile content
+├── categories/          Category taxonomy pages
+├── collections/         Collection taxonomy pages
+├── community/           Community-related content
+├── cve/                 CVE and vulnerability research
+├── guides/              Technical guides and tutorials
+├── incident/            Security incident analysis
+├── posts/               General articles and news
+├── projects/            Project-related content
+├── reward/              Reward/support-related content
+├── tags/                Tag taxonomy pages
+├── writeups/            CTF and Hack The Box write-ups
+│
+└── README.md            Repository documentation
+```
+
+Content organization follows Hugo's content model.
+
+Some sections contain regular Markdown files while others use page bundles
+when local resources such as screenshots or diagrams are required.
+
+## Content Types
+
+PullSec separates content according to its technical purpose.
+
+### CVE Research
+
+Location:
+
+```text
+cve/
+```
+
+Used for vulnerability analysis and CVE research.
+
+Example:
+
+```text
+cve/
+└── kernel/
+    └── CVE-2026-31431.md
+```
+
+Typical subjects include:
+
+- vulnerability analysis;
+- exploitation primitives;
+- root cause analysis;
+- affected components;
+- mitigation;
+- detection opportunities;
+- technical references.
+
+### Security Incidents
+
+Location:
+
+```text
+incident/
+```
+
+Used for security incident analysis and threat activity.
+
+Page bundles are preferred when the article requires local resources.
+
+Example:
+
+```text
+incident/
+└── ai-powershell/
+    ├── index.md
+    └── images/
+```
+
+Typical subjects include:
+
+- intrusion analysis;
+- attack chains;
+- threat actor activity;
+- PowerShell abuse;
+- credential compromise;
+- persistence;
+- lateral movement;
+- detection engineering;
+- lessons learned.
+
+### Guides
+
+Location:
+
+```text
+guides/
+```
+
+Used for technical tutorials and operational documentation.
+
+Example:
+
+```text
+guides/
+└── wireless/
+```
+
+Typical subjects include:
+
+- system administration;
+- networking;
+- wireless security;
+- homelab infrastructure;
+- Linux;
+- security tooling;
+- configuration walkthroughs.
+
+### News
+
+Location:
+
+```text
+posts/news/
+```
+
+Used for cybersecurity news, ecosystem developments and technical commentary.
+
+Example:
+
+```text
+posts/
+└── news/
+    └── example.md
+```
+
+### Write-ups
+
+Location:
+
+```text
+writeups/
+```
+
+Used primarily for CTF and Hack The Box technical walkthroughs.
+
+Example:
+
+```text
+writeups/
+└── hackthebox/
+    └── artificial/
+        ├── index.md
+        └── images/
+```
+
+Write-ups generally document:
+
+```text
+Reconnaissance
+      ↓
+Enumeration
+      ↓
+Initial Access
+      ↓
+Exploitation
+      ↓
+Privilege Escalation
+      ↓
+Post-Exploitation
+      ↓
+Lessons Learned
+```
+
+### Projects
+
+Location:
+
+```text
+projects/
+```
+
+Used for project-related pages and technical project documentation.
+
+## Content Workflow
+
+The recommended content workflow is:
+
+```text
+Create article
+     │
+     ▼
+Write / research
+     │
+     ▼
+Preview locally
+     │
+     ▼
+Review front matter
+     │
+     ▼
+Commit to hugo-content
+     │
+     ▼
+Push hugo-content
+     │
+     ▼
+Update content submodule in hugo-fixit
+     │
+     ▼
+Production build
+     │
+     ▼
+Deploy
+```
+
+### Clone the Content Repository
+
+For direct content work:
 
 ```bash
 git clone https://github.com/pullsec/hugo-content.git
 cd hugo-content
 ```
 
-### update content
+Before editing:
 
 ```bash
-git add .
-git commit -m "feat: add new writeup"
-git push
+git checkout main
+git pull --rebase
 ```
 
-### update the main blog repository
+## Creating Content
 
-After pushing content changes, the private blog repository must update its submodule pointer:
+Content templates are maintained as Hugo archetypes in the parent
+`hugo-fixit` repository.
+
+Available specialized archetypes include:
+
+| Kind | Destination | Purpose |
+| --- | --- | --- |
+| `cve` | `content/cve/` | CVE and vulnerability research |
+| `incident` | `content/incident/` | Security incident analysis |
+| `guide` | `content/guides/` | Technical guides |
+| `news` | `content/posts/news/` | News and ecosystem analysis |
+| `writeup` | `content/writeups/` | CTF / Hack The Box write-ups |
+
+> [!IMPORTANT]
+> Run `hugo new` from the root of the main `hugo-fixit` repository.
+>
+> The archetypes are stored there while this repository is mounted as
+> `content/`.
+
+### Create a CVE Article
 
 ```bash
-cd ../hugo-fixit
-git submodule update --remote --merge content
-git add content
-git commit -m "chore: update content submodule"
-git push
+hugo new content cve/kernel/CVE-YYYY-NNNNN.md --kind cve
 ```
 
-## integration-with-the-main-blog
+Example:
 
-This repository is intended to be mounted inside the main blog repository as:
+```bash
+hugo new content cve/kernel/CVE-2026-12345.md --kind cve
+```
+
+### Create an Incident Analysis
+
+```bash
+hugo new content incident/example/index.md --kind incident
+```
+
+### Create a Guide
+
+```bash
+hugo new content guides/example.md --kind guide
+```
+
+### Create a News Article
+
+```bash
+hugo new content posts/news/example.md --kind news
+```
+
+### Create a Write-up
+
+```bash
+hugo new content writeups/hackthebox/machine/index.md --kind writeup
+```
+
+### Create Content with Podman
+
+When Hugo is not installed directly on the host:
+
+```bash
+podman run --rm -it \
+  --userns=keep-id \
+  -v "$PWD":/src:Z \
+  -w /src \
+  ghcr.io/gohugoio/hugo:v0.164.0 \
+  new content incident/example/index.md \
+  --kind incident
+```
+
+This command must be executed from the main `hugo-fixit` repository.
+
+## Page Bundles and Assets
+
+Page bundles should be preferred when an article contains local resources.
+
+For example:
+
+```text
+writeups/
+└── hackthebox/
+    └── machine/
+        ├── index.md
+        └── images/
+            ├── enumeration.png
+            ├── foothold.png
+            └── privilege-escalation.png
+```
+
+Likewise for incident research:
+
+```text
+incident/
+└── example/
+    ├── index.md
+    └── images/
+        ├── attack-chain.png
+        └── timeline.png
+```
+
+This keeps article-specific resources close to the content that consumes them.
+
+It also prevents the global static asset directories from becoming a
+collection of unrelated article resources.
+
+## Front Matter
+
+Content metadata is defined using YAML front matter.
+
+A typical PullSec article contains metadata similar to:
+
+```yaml
+---
+title: "Example Article"
+date: 2026-01-01T12:00:00+02:00
+lastmod: 2026-01-01T12:00:00+02:00
+
+description: "Technical description of the article."
+
+comment: false
+
+type: posts
+
+toc:
+  enable: true
+
+categories:
+  - security
+
+collections:
+  - research
+
+tags:
+  - linux
+  - security
+  - research
+
+keywords:
+  - cybersecurity
+  - vulnerability research
+---
+```
+
+The exact front matter depends on the content archetype.
+
+### Metadata Guidelines
+
+`title` should clearly identify the subject.
+
+`description` should provide a concise technical summary suitable for search
+results and metadata.
+
+`categories` should represent the broad content family.
+
+`collections` should group related research or technical subjects.
+
+`tags` should describe technologies, techniques, platforms or concepts.
+
+`keywords` may provide additional search and SEO context.
+
+`lastmod` should reflect meaningful article modifications rather than cosmetic
+changes.
+
+## Integration with the Main Blog
+
+This repository is mounted by the main Hugo project as:
 
 ```text
 content/
 ```
 
-### add as submodule
-
-From the main private blog repository:
+From the main `hugo-fixit` repository:
 
 ```bash
-git submodule add https://github.com/pullsec/hugo-content.git content
+git submodule status content
 ```
 
-If already configured:
+To initialize the content submodule after cloning:
 
 ```bash
 git submodule update --init --recursive
 ```
 
-## local-preview
+### Updating the Content Pointer
 
-This repository does not build the site by itself.
+After committing and pushing changes from `hugo-content`:
 
-To preview content properly, use it through the main Hugo project (`hugo-fixit`) where the engine, theme, and layout logic are available.
+```bash
+cd ../hugo-fixit
+```
 
-Example from the main blog repository:
+Update the submodule:
+
+```bash
+git submodule update --remote --merge content
+```
+
+Review the change:
+
+```bash
+git diff --submodule
+```
+
+Then commit the new content revision:
+
+```bash
+git add content
+git commit -m "chore(content): update content submodule"
+git push origin main
+```
+
+The main repository now references the new `hugo-content` commit.
+
+## Local Preview
+
+This repository does not contain everything required to render PullSec by
+itself.
+
+The proper preview environment is the main `hugo-fixit` repository.
+
+From its root directory:
 
 ```bash
 podman run --rm -it \
@@ -167,31 +589,227 @@ podman run --rm -it \
   -p 1313:1313 \
   -v "$PWD":/src:Z \
   -w /src \
-  ghcr.io/gohugoio/hugo:v0.158.0 \
-  server --bind 0.0.0.0 --baseURL http://localhost:1313
+  ghcr.io/gohugoio/hugo:v0.164.0 \
+  server \
+  --bind 0.0.0.0 \
+  --baseURL http://localhost:1313
 ```
 
-## faq
+Open:
 
-### why separate content from the main site?
+```text
+http://localhost:1313/
+```
 
-To maintain a clean separation between:
+This ensures the content is rendered using the actual:
 
-- editorial content
-- site engine and configuration
-- deployment and automation logic
+- Hugo configuration;
+- FixIt theme;
+- layouts;
+- shortcodes;
+- components;
+- assets;
+- production content structure.
 
-### why keep this repository public?
+## Git Workflow
 
-Because the content itself is intended to be published and shared openly.
+### Before Editing
 
-### why keep the engine private?
+```bash
+git checkout main
+git pull --rebase
+git status
+```
 
-To avoid exposing internal site configuration, layout customizations, and deployment implementation.
+### After Editing
 
-### can this repository be used standalone?
+Inspect the changes:
 
-Not as a full website.  
-It is a content source designed to be consumed by the main Hugo project.
-test ruleset pipeline
+```bash
+git status
+git diff
+```
 
+Stage the required content:
+
+```bash
+git add path/to/content
+```
+
+Commit:
+
+```bash
+git commit -m "docs: update article"
+```
+
+Push:
+
+```bash
+git push origin main
+```
+
+### Example Commit Messages
+
+New CVE research:
+
+```text
+feat(cve): add CVE-2026-12345 analysis
+```
+
+New incident:
+
+```text
+feat(incident): add PowerShell intrusion analysis
+```
+
+New guide:
+
+```text
+feat(guides): add wireless security guide
+```
+
+New write-up:
+
+```text
+feat(writeups): add Hack The Box machine writeup
+```
+
+Article correction:
+
+```text
+fix(content): correct technical details
+```
+
+Article update:
+
+```text
+docs: update vulnerability analysis
+```
+
+## Common Pitfalls
+
+| Issue | Cause | Resolution |
+| --- | --- | --- |
+| Changes are not visible on PullSec | `hugo-fixit` still references the previous content commit | Update the `content` submodule pointer |
+| Cannot push from `content/` | Submodule is in detached HEAD state | Run `git checkout main` |
+| Push is rejected | Local content branch is outdated | Run `git pull --rebase` |
+| Article renders incorrectly | Invalid front matter or unsupported structure | Compare against the appropriate archetype |
+| Images are missing | Incorrect bundle/resource path | Keep article resources inside the appropriate page bundle |
+| Local preview differs from production | Wrong Hugo environment/version | Preview through `hugo-fixit` using Hugo `v0.164.0` |
+| New article has inconsistent metadata | Article created manually | Use the corresponding Hugo archetype |
+| Content is committed but not deployed | Main repository pointer was not updated | Commit the updated `content` submodule in `hugo-fixit` |
+
+## FAQ
+
+### Why separate content from the main site?
+
+The separation keeps editorial content independent from site infrastructure.
+
+`hugo-content` contains the material being published.
+
+`hugo-fixit` contains the infrastructure responsible for transforming that
+material into the final website.
+
+### Why keep this repository public?
+
+The Markdown articles and associated public resources are intended to be
+published openly.
+
+Keeping the content repository public also makes the technical research easier
+to inspect, reference and version independently from the website itself.
+
+### Can this repository build PullSec by itself?
+
+No.
+
+This repository intentionally contains only the content layer.
+
+The complete site requires the main `hugo-fixit` project, which provides Hugo
+configuration, FixIt, layouts, assets, archetypes and build logic.
+
+### Where are the Hugo archetypes?
+
+The archetypes are maintained in:
+
+```text
+hugo-fixit/archetypes/
+```
+
+rather than this repository.
+
+This is intentional.
+
+Archetypes belong to the content-generation infrastructure while this
+repository stores the resulting content.
+
+### Why use different archetypes?
+
+Different types of security content require different metadata and structure.
+
+For example, a CVE analysis and a Hack The Box write-up have different
+editorial requirements.
+
+Dedicated archetypes provide consistent starting points for each content type.
+
+### Why use page bundles?
+
+Page bundles keep an article and its local resources together.
+
+This is particularly useful for:
+
+- screenshots;
+- diagrams;
+- exploit output;
+- architecture images;
+- CTF evidence;
+- incident timelines.
+
+It makes articles easier to maintain and move without breaking their
+associated resources.
+
+### Why use a Git submodule?
+
+The submodule allows the main site repository to reference an exact
+`hugo-content` commit.
+
+This provides reproducibility:
+
+```text
+hugo-fixit commit
+       │
+       └── content → exact hugo-content commit
+```
+
+A production build therefore uses a known and version-controlled content
+revision.
+
+## Project Relationship
+
+```text
+                  PullSec
+                     │
+          ┌──────────┴──────────┐
+          │                     │
+          ▼                     ▼
+     hugo-fixit            hugo-content
+          │                     │
+          │                     ├── CVEs
+          │                     ├── Incidents
+          ├── Hugo              ├── Guides
+          ├── FixIt             ├── News
+          ├── Config            ├── Write-ups
+          ├── Layouts           └── Projects
+          ├── Archetypes
+          ├── CI/CD
+          │
+          └──────────┬──────────
+                     │
+                     ▼
+                  Hugo Build
+                     │
+                     ▼
+                GitHub Pages
+                     │
+                     ▼
+                pullsec.io
+```
