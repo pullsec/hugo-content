@@ -15,7 +15,8 @@
 
 ---
 
-## Table of Contents
+<details>
+  <summary><strong>Table of Contents</strong></summary>
 
 - [About](#about)
 - [Architecture](#architecture)
@@ -31,6 +32,8 @@
 - [Git Workflow](#git-workflow)
 - [Common Pitfalls](#common-pitfalls)
 - [FAQ](#faq)
+
+</details>
 
 ## About
 
@@ -314,34 +317,35 @@ Used for project-related pages and technical project documentation.
 
 ## Content Workflow
 
-The recommended content workflow is:
+The content publishing workflow is intentionally separated from the site
+infrastructure.
 
-```text
-Create article
-     │
-     ▼
-Write / research
-     │
-     ▼
-Preview locally
-     │
-     ▼
-Review front matter
-     │
-     ▼
-Commit to hugo-content
-     │
-     ▼
-Push hugo-content
-     │
-     ▼
-Update content submodule in hugo-fixit
-     │
-     ▼
-Production build
-     │
-     ▼
-Deploy
+```mermaid
+flowchart TD
+    A[Create or update content]
+    B[Write and research]
+    C[Preview locally]
+    D[Review front matter]
+    E[Commit to hugo-content]
+    F[Push hugo-content]
+    G[Update content submodule in hugo-fixit]
+    H[Commit updated submodule pointer]
+    I[GitHub Actions]
+    J[Hugo production build]
+    K[GitHub Pages]
+    L[pullsec.io]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
+    I --> J
+    J --> K
+    K --> L
 ```
 
 ### Clone the Content Repository
@@ -785,31 +789,55 @@ revision.
 
 ## Project Relationship
 
-```text
-                  PullSec
-                     │
-          ┌──────────┴──────────┐
-          │                     │
-          ▼                     ▼
-     hugo-fixit            hugo-content
-          │                     │
-          │                     ├── CVEs
-          │                     ├── Incidents
-          ├── Hugo              ├── Guides
-          ├── FixIt             ├── News
-          ├── Config            ├── Write-ups
-          ├── Layouts           └── Projects
-          ├── Archetypes
-          ├── CI/CD
-          │
-          └──────────┬──────────
-                     │
-                     ▼
-                  Hugo Build
-                     │
-                     ▼
-                GitHub Pages
-                     │
-                     ▼
-                pullsec.io
+PullSec separates the website infrastructure from the public editorial
+content.
+
+```mermaid
+flowchart TB
+    P[PullSec]
+
+    HF[hugo-fixit]
+    HC[hugo-content]
+
+    HUGO[Hugo v0.164.0]
+    FIXIT[FixIt v1]
+    CONFIG[Configuration]
+    LAYOUTS[Layouts]
+    ARCH[Archetypes]
+    CICD[GitHub Actions]
+
+    CVE[CVE Research]
+    INCIDENT[Incident Analysis]
+    GUIDES[Guides]
+    NEWS[News]
+    WRITEUPS[Write-ups]
+    PROJECTS[Projects]
+
+    BUILD[Production Build]
+    PAGES[GitHub Pages]
+    SITE[pullsec.io]
+
+    P --> HF
+    P --> HC
+
+    HF --> HUGO
+    HF --> FIXIT
+    HF --> CONFIG
+    HF --> LAYOUTS
+    HF --> ARCH
+    HF --> CICD
+
+    HC --> CVE
+    HC --> INCIDENT
+    HC --> GUIDES
+    HC --> NEWS
+    HC --> WRITEUPS
+    HC --> PROJECTS
+
+    HF --> BUILD
+    HC -->|content submodule| BUILD
+
+    BUILD --> CICD
+    CICD --> PAGES
+    PAGES --> SITE
 ```
