@@ -1,6 +1,15 @@
 ---
 title: "Guides"
-type: "posts"
+description: "Practical guides covering infrastructure, networking, systems, and cybersecurity."
+
 cascade:
-  type: "posts"
+  params:
+    type: posts
+
+keywords:
+  - Guides
+  - Infrastructure
+  - Networking
+  - Systems
+  - Cybersecurity
 ---
