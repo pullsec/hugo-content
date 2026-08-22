@@ -1,6 +1,7 @@
 ---
-title: "Guides"
+title: "All Guides"
 description: "Practical guides covering infrastructure, networking, systems, and cybersecurity."
+icon: "fa-solid fa-book"
 
 cascade:
   params:
