@@ -703,89 +703,193 @@ docs: update vulnerability analysis
 | New article has inconsistent metadata | Article created manually | Use the corresponding Hugo archetype |
 | Content is committed but not deployed | Main repository pointer was not updated | Commit the updated `content` submodule in `hugo-fixit` |
 
-## FAQ
-
-### Why separate content from the main site?
-
-The separation keeps editorial content independent from site infrastructure.
-
-`hugo-content` contains the material being published.
-
-`hugo-fixit` contains the infrastructure responsible for transforming that
-material into the final website.
-
-### Why keep this repository public?
-
-The Markdown articles and associated public resources are intended to be
-published openly.
-
-Keeping the content repository public also makes the technical research easier
-to inspect, reference and version independently from the website itself.
-
 ### Can this repository build PullSec by itself?
 
 No.
+## FAQ
 
-This repository intentionally contains only the content layer.
+<details>
+  <summary><strong>Why is the content stored in a separate repository?</strong></summary>
 
-The complete site requires the main `hugo-fixit` project, which provides Hugo
-configuration, FixIt, layouts, assets, archetypes and build logic.
+The content is maintained independently from the main Hugo infrastructure.
 
-### Where are the Hugo archetypes?
+This separation keeps editorial content isolated from configuration, themes,
+layouts, assets, CI/CD workflows, and deployment logic.
 
-The archetypes are maintained in:
+It also allows the public content history to evolve independently from the
+website infrastructure.
+
+</details>
+
+<details>
+  <summary><strong>Why use a Git submodule?</strong></summary>
+
+The `hugo-content` repository is integrated into `hugo-fixit` as a Git
+submodule.
+
+This allows both repositories to maintain independent Git histories while
+allowing Hugo to consume the content directly during the build.
+
+The parent repository also records the exact content revision used for a
+particular deployment.
+
+</details>
+
+<details>
+  <summary><strong>Why is the content submodule sometimes in detached HEAD state?</strong></summary>
+
+Git submodules normally check out the exact commit referenced by their parent
+repository rather than automatically checking out a branch.
+
+Before editing content directly inside the submodule, switch to `main`:
+
+```bash
+git checkout main
+git pull --rebase origin main
+```
+
+Verify the state with:
+
+```bash
+git status
+```
+
+</details>
+
+<details>
+  <summary><strong>Why are my content changes not immediately visible on the website?</strong></summary>
+
+Pushing a change to `hugo-content` updates this repository, but the main
+`hugo-fixit` repository may still reference the previous content commit.
+
+Update the submodule pointer from `hugo-fixit`:
+
+```bash
+cd content
+git checkout main
+git pull --rebase origin main
+cd ..
+
+git add content
+git commit -m "chore(content): update content submodule"
+git push origin main
+```
+
+The deployment pipeline can then build the website using the new revision.
+
+</details>
+
+<details>
+  <summary><strong>Why use specialized archetypes?</strong></summary>
+
+Different types of technical content require different metadata.
+
+A CVE analysis does not necessarily need the same initial structure as a
+Hack The Box write-up, incident analysis, guide, or news article.
+
+Specialized archetypes provide consistent starting points while avoiding a
+single oversized generic template.
+
+Current archetypes include:
+
+```text
+cve.md
+guide.md
+incident.md
+news.md
+writeup.md
+```
+
+alongside the more general project archetypes.
+
+</details>
+
+<details>
+  <summary><strong>Where are the archetypes stored?</strong></summary>
+
+Archetypes are maintained in the main `hugo-fixit` repository:
 
 ```text
 hugo-fixit/archetypes/
 ```
 
-rather than this repository.
+They are infrastructure-level templates rather than editorial content, so
+they do not belong in `hugo-content`.
 
-This is intentional.
+</details>
 
-Archetypes belong to the content-generation infrastructure while this
-repository stores the resulting content.
+<details>
+  <summary><strong>Where is the website infrastructure maintained?</strong></summary>
 
-### Why use different archetypes?
+The Hugo configuration, FixIt integration, layouts, reusable assets,
+archetypes, CI/CD pipeline, and deployment configuration are maintained in
+the `hugo-fixit` repository.
 
-Different types of security content require different metadata and structure.
+This repository focuses on content.
 
-For example, a CVE analysis and a Hack The Box write-up have different
-editorial requirements.
+</details>
 
-Dedicated archetypes provide consistent starting points for each content type.
+<details>
+  <summary><strong>Why use page bundles?</strong></summary>
 
-### Why use page bundles?
+Page bundles keep an article and its resources together.
 
-Page bundles keep an article and its local resources together.
-
-This is particularly useful for:
-
-- screenshots;
-- diagrams;
-- exploit output;
-- architecture images;
-- CTF evidence;
-- incident timelines.
-
-It makes articles easier to maintain and move without breaking their
-associated resources.
-
-### Why use a Git submodule?
-
-The submodule allows the main site repository to reference an exact
-`hugo-content` commit.
-
-This provides reproducibility:
+For example:
 
 ```text
-hugo-fixit commit
-       │
-       └── content → exact hugo-content commit
+writeups/hackthebox/example/
+├── index.md
+└── images/
+    ├── enumeration.png
+    └── exploitation.png
 ```
 
-A production build therefore uses a known and version-controlled content
-revision.
+This is particularly useful for long technical articles containing
+screenshots, diagrams, or other article-specific resources.
+
+</details>
+
+<details>
+  <summary><strong>Should generated site files be committed here?</strong></summary>
+
+No.
+
+This repository contains source content.
+
+The generated production site belongs to the Hugo build and deployment
+process managed by `hugo-fixit`.
+
+Files generated under `public/` are build artifacts rather than editorial
+source content.
+
+</details>
+
+<details>
+  <summary><strong>How should a rejected push be handled?</strong></summary>
+
+If Git reports:
+
+```text
+! [rejected] main -> main (fetch first)
+```
+
+the remote branch contains commits that are not available locally.
+
+Prefer rebasing the local work:
+
+```bash
+git pull --rebase origin main
+```
+
+Resolve any conflicts if necessary, then:
+
+```bash
+git push origin main
+```
+
+Avoid using `git push --force` on `main` for normal content synchronization.
+
+</details>
 
 ## Project Relationship
 
