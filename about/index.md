@@ -2,7 +2,7 @@
 title: about
 subtitle: PullSec
 date: 2026-01-08T19:51:48+02:00
-lastmod: 2026-01-24T21:20:00+02:00
+lastmod: 2026-08-22T16:00:00+02:00
 comment: false
 twemoji: false
 lightgallery: false
@@ -51,8 +51,10 @@ const website = new Blog('A Collection of Strengths', 'PullSec', 'https://pullse
 {{< /style >}}
 
 {{< details "History" >}}
-```timeline {reverse=true, animation=true, height="280px"}
+```timeline {reverse=true, animation=true, height="320px"}
 events:
+  - timestamp: 2026-08-22
+    content: PullSec reached its first major technical milestone. The blog was migrated to FixIt v1, its content structure was reorganized around dedicated research sections, and the publishing workflow was consolidated with automated builds, deployment, and integrated search.
   - timestamp: 2026-01-08
     content: This blog officially went live. I wanted a place to keep track of what I build, what I test, and what I learn over time.
   - timestamp: 2025-06-10
