@@ -4,6 +4,7 @@ description: "A breakdown of my approach and key takeaways."
 date: 2026-01-19T22:15:55+02:00
 lastmod: 2026-04-18T06:12:22+02:00
 comment: false
+url: "/writeups/hackthebox/rustykey/"
 categories:
   - writeups
 collections:
@@ -29,7 +30,7 @@ RustyKey was a bit more technical and required a deeper understanding of how sys
 
 ## About
 
-**RustyKey** is a **Hard-level Linux-based machine** on the Hack The Box platform, designed to challenge your understanding of modern binary exploitation and privilege escalation techniques. Unlike straightforward web-based CTFs, RustyKey introduces advanced concepts such as secure service interaction, custom binary reverse engineering, and potentially Rust-based executables or system-level misconfigurations.
+**RustyKey** is a **Hard-level Windows-based machine** on the Hack The Box platform, designed to challenge your understanding of modern binary exploitation and privilege escalation techniques. Unlike straightforward web-based CTFs, RustyKey introduces advanced concepts such as secure service interaction, custom binary reverse engineering, and potentially Rust-based executables or system-level misconfigurations.
 
 This write-up walks through my full exploitation path — from thorough enumeration and service analysis, to identifying vulnerabilities within custom applications, and ultimately escalating to root access. Throughout the process, custom scripting to analyze system behavior and craft working exploits.
 

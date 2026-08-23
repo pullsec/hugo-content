@@ -3,6 +3,7 @@ title: "Artificial"
 description: "How I approached and solved this machine."
 date: 2025-06-28T17:15:55+02:00
 lastmod: 2026-04-18T05:12:22+02:00
+url: "/writeups/hackthebox/artificial/"
 comment: false
 categories:
   - writeups

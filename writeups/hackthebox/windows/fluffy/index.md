@@ -4,6 +4,7 @@ description: "What worked, what didn’t, and how I got root."
 date: 2025-08-16T21:45:12+02:00
 lastmod: 2026-04-17T10:12:56+02:00
 comment: false
+url: "/writeups/hackthebox/fluffy/"
 categories:
   - writeups
 collections:

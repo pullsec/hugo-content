@@ -1,6 +1,5 @@
 ---
 title: "All CVE"
-description: "Technical analysis of real-world vulnerabilities, exploitation techniques, and security impact."
 icon: "fa-solid fa-bug"
 
 cascade:
